@@ -3,7 +3,7 @@
 Jokka App adalah aplikasi untuk melihat info wisata pada kota Makassar
 
 
-Anggota Kelompok 6 (tim gedagedigedagedao):
+Anggota Kelompok 6 (gedagedigedagedao):
 1. Reynald Abner Tananda (D121221072)
 2. Dean Gery Pasamba (D121221080)
 3. Muhammad Rifqi (D121221089)
