@@ -1,4 +1,4 @@
-package com.example.jokka_app.ui.home
+package com.example.jokka_app.Home
 
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.Box

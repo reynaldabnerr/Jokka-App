@@ -7,7 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.navigation.compose.rememberNavController
 import com.example.jokka_app.navigation.NavGraph
-import com.example.jokka_app.ui.theme.JokkaAppTheme  // Pastikan nama tema sesuai dengan yang telah Anda buat
+import com.example.jokka_app.ui.theme.JokkaAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
