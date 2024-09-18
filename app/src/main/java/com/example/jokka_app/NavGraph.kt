@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.jokka_app.Auth.SignInScreen
+import com.example.jokka_app.Auth.SignUpScreen
 import com.example.jokka_app.Auth.SplashScreen
 import com.example.jokka_app.Home.HomeScreen
 
@@ -16,6 +17,9 @@ fun NavGraph(navController: NavHostController) {
         }
         composable(Screen.SignIn.route) {
             SignInScreen(navController = navController)
+        }
+        composable(Screen.SignUp.route) {
+            SignUpScreen(navController = navController)
         }
         composable(Screen.Home.route) {
             HomeScreen()
@@ -29,5 +33,6 @@ sealed class Screen(val route: String) {
     object Splash : Screen("splash")
     object SignIn : Screen("sign_in")
     object Home : Screen("home")
+    object SignUp : Screen("sign_up")
     // Tambahkan objek layar lainnya di sini jika diperlukan
 }
