@@ -4,10 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.jokka_app.Auth.SignInScreen
-import com.example.jokka_app.Auth.SignUpScreen
-import com.example.jokka_app.Auth.SplashScreen
-import com.example.jokka_app.Home.HomeScreen
+import Features.Auth.SignInScreen
+import Features.Auth.SignUpScreen
+import Features.Auth.SplashScreen
+import Features.Home.HomeScreen
 
 @Composable
 fun NavGraph(navController: NavHostController) {

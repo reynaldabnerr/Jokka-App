@@ -1,4 +1,4 @@
-package com.example.jokka_app.Auth
+package Features.Auth
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
