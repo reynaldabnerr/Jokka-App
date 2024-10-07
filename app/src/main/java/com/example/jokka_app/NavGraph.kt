@@ -4,10 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import Features.Auth.SignInScreen
-import Features.Auth.SignUpScreen
-import Features.Auth.SplashScreen
-import Features.Home.HomeScreen
+import features.auth.SignInScreen
+import features.auth.SignUpScreen
+import features.auth.SplashScreen
+import features.home.HomeScreen
 
 @Composable
 fun NavGraph(navController: NavHostController) {

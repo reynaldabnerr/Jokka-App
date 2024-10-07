@@ -1,5 +1,5 @@
 // File: PlaceCard.kt
-package com.example.jokka_app.components
+package common.card
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

@@ -1,4 +1,4 @@
-package Features.Auth
+package features.auth
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
