@@ -28,7 +28,7 @@ fun NavGraph(navController: NavHostController, userViewModel: UserViewModel = vi
             ProfileScreen(navController = navController, userViewModel = userViewModel)
         }
         composable(Screen.Home.route) {
-            HomeScreen(navController = navController)
+            HomeScreen(navController = navController, userViewModel = userViewModel)
         }
     }
 }
