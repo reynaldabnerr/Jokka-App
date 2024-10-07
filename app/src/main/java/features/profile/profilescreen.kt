@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -17,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.jokka_app.R
 import common.appbar.AppBar
 import common.appbar.BottomBar
@@ -33,6 +35,10 @@ fun ProfileScreen(navController: NavController, userViewModel: UserViewModel) {
     val name = userData.value.name.ifEmpty { "Unknown User" }
     val phoneNumber = userData.value.phoneNumber.ifEmpty { "No Phone Number" }
     val email = userData.value.email.ifEmpty { "No Email" }
+
+    // Get the current route from the NavController's back stack
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
 
     Column(
         modifier = Modifier
@@ -111,13 +117,13 @@ fun ProfileScreen(navController: NavController, userViewModel: UserViewModel) {
             )
         }
 
-        // Bottom Navigation Bar - pass current screen as "Profile"
+        // Bottom Navigation Bar - pass the current route dynamically
         BottomBar(
-            currentScreen = "Profile", // Pass the current screen name to BottomBar
+            currentScreen = currentRoute ?: "",  // Use the current route dynamically
             navController = navController,
             onItemSelected = { selectedScreen ->
                 // Only navigate if not already on the selected screen
-                if (selectedScreen != "Profile") {
+                if (selectedScreen != currentRoute) {
                     navController.navigate(selectedScreen)
                 }
             }

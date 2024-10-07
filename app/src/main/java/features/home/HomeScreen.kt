@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.jokka_app.R
 import common.appbar.AppBar
 import common.appbar.BottomBar
@@ -32,7 +33,9 @@ fun HomeScreen(navController: NavController) { // Pass NavController as a parame
         Place(R.drawable.image5, R.string.travel5)
     )
 
-    var selectedScreen by remember { mutableStateOf("Home") }
+    // Get the current route from the NavController's back stack
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
 
     Column(
         modifier = Modifier
@@ -101,9 +104,13 @@ fun HomeScreen(navController: NavController) { // Pass NavController as a parame
 
         // Bottom Navigation Bar
         BottomBar(
-            currentScreen = selectedScreen,
+            currentScreen = currentRoute ?: "", // Use the current route dynamically
             navController = navController, // Pass NavController to BottomBar
-            onItemSelected = { selectedScreen = it }
+            onItemSelected = { selectedScreen ->
+                if (selectedScreen != currentRoute) {
+                    navController.navigate(selectedScreen)
+                }
+            }
         )
     }
 }
