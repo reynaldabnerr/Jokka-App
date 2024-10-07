@@ -5,12 +5,14 @@ package features.auth
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -36,6 +38,7 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
     val (email, setEmail) = remember { mutableStateOf("") }
     val (password, setPassword) = remember { mutableStateOf("") }
     val (confirmPassword, setConfirmPassword) = remember { mutableStateOf("") }
+    val (isTermsAccepted, setTermsAccepted) = remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -107,17 +110,31 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
                 visualTransformation = PasswordVisualTransformation()
             )
 
-            // Sign Up Button
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Checkbox(
+                    checked = isTermsAccepted,
+                    onCheckedChange = { setTermsAccepted(it) }
+                )
+                Text(
+                    text = "I agree to the Terms and Conditions"
+                )
+            }
             // Sign Up Button
             Button(
                 text = "Sign up",
                 onClick = {
-                    // Update the UserViewModel with the entered data
-                    userViewModel.updateUserData(name, phonenumber, email)
-
-                    // Navigate to the profile screen, no need to pass the data via the URL
-                    navController.navigate(Screen.Profile.route)
-                }
+                    if (isTermsAccepted) {
+                        // Update the UserViewModel with the entered data
+                        userViewModel.updateUserData(name, phonenumber, email)
+                        // Navigate to the profile screen
+                        navController.navigate(Screen.Profile.route)
+                    }
+                },
+                modifier = Modifier.alpha(if (isTermsAccepted) 1f else 0.5f)
             )
 
             // Call the ClickableFooter here to display it
