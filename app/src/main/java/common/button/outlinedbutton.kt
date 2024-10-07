@@ -27,8 +27,7 @@ fun OutlinedButton(
             .fillMaxWidth()
             .height(56.dp)
             .padding(top = 16.dp)
-            .background(containerColor)
-            .padding(horizontal = 8.dp), // Optional padding inside button
+            .background(containerColor),
         colors = ButtonDefaults.outlinedButtonColors(
             contentColor = contentColor
         ),

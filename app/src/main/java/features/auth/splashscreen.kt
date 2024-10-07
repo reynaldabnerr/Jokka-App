@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.jokka_app.R
-import com.example.jokka_app.navigation.Screen
+import com.example.jokka_app.Screen
 import kotlinx.coroutines.delay
 
 @Composable

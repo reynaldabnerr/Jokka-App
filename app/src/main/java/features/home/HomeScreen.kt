@@ -1,41 +1,29 @@
 package features.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.jokka_app.R
 import common.appbar.AppBar
-import common.bottombar.BottomBar
+import common.appbar.BottomBar
 import common.card.Place
 import common.card.PlaceCard
 import common.carousel.Carousel
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) { // Pass NavController as a parameter
     val places = listOf(
         Place(R.drawable.image1, R.string.travel1),
         Place(R.drawable.image2, R.string.travel2),
@@ -114,6 +102,7 @@ fun HomeScreen() {
         // Bottom Navigation Bar
         BottomBar(
             currentScreen = selectedScreen,
+            navController = navController, // Pass NavController to BottomBar
             onItemSelected = { selectedScreen = it }
         )
     }

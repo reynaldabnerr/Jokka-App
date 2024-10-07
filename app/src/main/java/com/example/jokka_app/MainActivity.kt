@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.navigation.compose.rememberNavController
-import com.example.jokka_app.navigation.NavGraph
 import com.example.jokka_app.ui.theme.JokkaAppTheme
 
 class MainActivity : ComponentActivity() {

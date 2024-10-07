@@ -1,17 +1,19 @@
-package com.example.jokka_app.navigation
+package com.example.jokka_app
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import features.auth.SignInScreen
 import features.auth.SignUpScreen
 import features.auth.SplashScreen
 import features.home.HomeScreen
+import features.profile.ProfileScreen
 
 @Composable
 fun NavGraph(navController: NavHostController) {
-    NavHost(navController, startDestination = Screen.Splash.route) {
+    NavHost(navController = navController, startDestination = Screen.Splash.route) {
         composable(Screen.Splash.route) {
             SplashScreen(navController = navController)
         }
@@ -21,18 +23,40 @@ fun NavGraph(navController: NavHostController) {
         composable(Screen.SignUp.route) {
             SignUpScreen(navController = navController)
         }
-        composable(Screen.Home.route) {
-            HomeScreen()
+        composable(
+            route = "${Screen.Profile.route}/{name}/{phonenumber}/{email}",
+            arguments = listOf(
+                navArgument("name") { defaultValue = "" },
+                navArgument("phonenumber") { defaultValue = "" },  // Treat as String
+                navArgument("email") { defaultValue = "" }
+            )
+        ) { backStackEntry ->
+            // Extract the passed arguments
+            val name = backStackEntry.arguments?.getString("name") ?: ""
+            val phonenumber = backStackEntry.arguments?.getString("phonenumber") ?: ""  // Changed to String
+            val email = backStackEntry.arguments?.getString("email") ?: ""
+
+            // Pass arguments to ProfileScreen
+            ProfileScreen(
+                navController = navController,
+                name = name,
+                phonenumber = phonenumber,
+                email = email
+            )
         }
-        // Tambahkan rute lain di sini jika diperlukan
+        composable(Screen.Home.route) {
+            HomeScreen(navController = navController)
+        }
+        // Add other routes here if needed
     }
 }
 
 // Define the screens in your app
 sealed class Screen(val route: String) {
-    object Splash : Screen("splash")
-    object SignIn : Screen("sign_in")
-    object Home : Screen("home")
-    object SignUp : Screen("sign_up")
-    // Tambahkan objek layar lainnya di sini jika diperlukan
+    data object Splash : Screen("splash")
+    data object SignIn : Screen("sign_in")
+    data object Home : Screen("home")
+    data object SignUp : Screen("sign_up")
+    data object Profile : Screen("profile")
+    // Add other screen objects here if needed
 }

@@ -108,11 +108,11 @@ fun SignUpScreen(navController: NavController) {
                 visualTransformation = PasswordVisualTransformation()
             )
 
-            // Sign Up Button
             Button(
                 text = "Sign up",
                 onClick = {
-                    navController.navigate("home")
+                    // Pass the entered data to the ProfileScreen
+                    navController.navigate("profile/$name/$phonenumber/$email")
                 }
             )
 
