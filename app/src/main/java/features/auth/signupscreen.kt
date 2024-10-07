@@ -2,10 +2,7 @@
 
 package features.auth
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
@@ -26,12 +23,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.jokka_app.Screen
 import common.button.Button
 import common.textfield.TextField
+import user.UserViewModel
 
 @Composable
-fun SignUpScreen(navController: NavController) {
-    // State to hold the values for name, email, password, and confirm password
+fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
+    // State to hold the values for name, phone number, email, password, and confirm password
     val (name, setName) = remember { mutableStateOf("") }
     val (phonenumber, setPhonenumber) = remember { mutableStateOf("") }
     val (email, setEmail) = remember { mutableStateOf("") }
@@ -62,7 +61,7 @@ fun SignUpScreen(navController: NavController) {
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
             )
 
-            //Phone Number Input Field
+            // Phone Number Input Field
             TextField(
                 value = phonenumber,
                 onValueChange = setPhonenumber,
@@ -108,11 +107,16 @@ fun SignUpScreen(navController: NavController) {
                 visualTransformation = PasswordVisualTransformation()
             )
 
+            // Sign Up Button
+            // Sign Up Button
             Button(
                 text = "Sign up",
                 onClick = {
-                    // Pass the entered data to the ProfileScreen
-                    navController.navigate("profile/$name/$phonenumber/$email")
+                    // Update the UserViewModel with the entered data
+                    userViewModel.updateUserData(name, phonenumber, email)
+
+                    // Navigate to the profile screen, no need to pass the data via the URL
+                    navController.navigate(Screen.Profile.route)
                 }
             )
 
@@ -151,5 +155,7 @@ fun ClickableFooter(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun SignUpScreenPreview() {
-    SignUpScreen(navController = rememberNavController()) // Provide a mock navController
+    // Provide a mock or empty ViewModel for the preview
+    val mockUserViewModel = UserViewModel()
+    SignUpScreen(navController = rememberNavController(), userViewModel = mockUserViewModel)
 }

@@ -1,9 +1,6 @@
 package features.auth
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,9 +19,10 @@ import androidx.navigation.compose.rememberNavController
 import common.button.Button
 import common.button.OutlinedButton
 import common.textfield.TextField
+import user.UserViewModel
 
 @Composable
-fun SignInScreen(navController: NavController) {
+fun SignInScreen(navController: NavController, userViewModel: UserViewModel) {
     // Use remember to hold state of email and password
     val (email, setEmail) = remember { mutableStateOf("") }
     val (password, setPassword) = remember { mutableStateOf("") }
@@ -68,6 +66,8 @@ fun SignInScreen(navController: NavController) {
                 visualTransformation = PasswordVisualTransformation() // Hides input with dots
             )
 
+            Spacer(modifier = Modifier.height(16.dp))
+
             // Use the custom Button from common.button
             Button(
                 text = "Sign In",
@@ -77,7 +77,8 @@ fun SignInScreen(navController: NavController) {
                         // Optional: Clear the back stack
                         popUpTo("sign_in") { inclusive = true }
                     }
-                }
+                },
+                modifier = Modifier.padding(vertical = 8.dp)
             )
 
             // Use the custom Outlined Button from common.button
@@ -95,5 +96,7 @@ fun SignInScreen(navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun SignInScreenPreview() {
-    SignInScreen(navController = rememberNavController()) // Provide a mock navController
+    // Provide a mock or empty ViewModel for the preview
+    val mockUserViewModel = UserViewModel()
+    SignInScreen(navController = rememberNavController(), userViewModel = mockUserViewModel)
 }

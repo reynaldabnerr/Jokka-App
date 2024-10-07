@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,9 +22,18 @@ import common.appbar.AppBar
 import common.appbar.BottomBar
 import common.button.Button
 import common.button.OutlinedButton
+import user.UserViewModel
 
 @Composable
-fun ProfileScreen(navController: NavController, name: String, email: String, phonenumber: String) {
+fun ProfileScreen(navController: NavController, userViewModel: UserViewModel) {
+    // Collect user data from ViewModel
+    val userData = userViewModel.userData.collectAsState()
+
+    // Handle fallback if data is not available
+    val name = userData.value.name.ifEmpty { "Unknown User" }
+    val phoneNumber = userData.value.phoneNumber.ifEmpty { "No Phone Number" }
+    val email = userData.value.email.ifEmpty { "No Email" }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -41,7 +51,7 @@ fun ProfileScreen(navController: NavController, name: String, email: String, pho
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f) // This ensures the content section takes available space
+                .weight(1f)
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
@@ -52,14 +62,13 @@ fun ProfileScreen(navController: NavController, name: String, email: String, pho
                 contentDescription = "Profile Picture",
                 modifier = Modifier
                     .size(120.dp)
-                    .clip(CircleShape)
-                    .background(Color.Gray),
+                    .clip(CircleShape),
                 contentScale = ContentScale.Crop
             )
 
             // Display Username
             Text(
-                text = name, // Display dynamic name
+                text = name, // Display dynamic name from ViewModel
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
@@ -68,14 +77,14 @@ fun ProfileScreen(navController: NavController, name: String, email: String, pho
 
             // Display Phone Number
             Text(
-                text = "Phone Number: $phonenumber",  // Display String phonenumber
+                text = "Phone Number: $phoneNumber",  // Display phone number from ViewModel
                 fontSize = 18.sp,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
             // Display Email
             Text(
-                text = email, // Display dynamic email
+                text = email, // Display email from ViewModel
                 fontSize = 16.sp,
                 color = Color.Gray,
                 modifier = Modifier.padding(top = 8.dp)
@@ -83,29 +92,34 @@ fun ProfileScreen(navController: NavController, name: String, email: String, pho
 
             Spacer(modifier = Modifier.height(32.dp))
 
+            // Edit Profile Button
             Button(
                 text = "Edit Profile",
                 onClick = {
-                    navController.navigate("edit_profile") {
-                        popUpTo("sign_in") { inclusive = true }
-                    }
+                    navController.navigate("edit_profile")
                 }
             )
 
+            // Log Out Button
             OutlinedButton(
                 text = "Log Out",
                 onClick = {
-                    navController.navigate("sign_in")
+                    navController.navigate("sign_in") {
+                        popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                    }
                 }
             )
         }
 
-        // Bottom Navigation Bar
+        // Bottom Navigation Bar - pass current screen as "Profile"
         BottomBar(
-            currentScreen = "Profile",
+            currentScreen = "Profile", // Pass the current screen name to BottomBar
             navController = navController,
             onItemSelected = { selectedScreen ->
-                navController.navigate(selectedScreen)
+                // Only navigate if not already on the selected screen
+                if (selectedScreen != "Profile") {
+                    navController.navigate(selectedScreen)
+                }
             }
         )
     }

@@ -1,62 +1,43 @@
 package com.example.jokka_app
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import features.auth.SignInScreen
 import features.auth.SignUpScreen
 import features.auth.SplashScreen
 import features.home.HomeScreen
 import features.profile.ProfileScreen
+import user.UserViewModel
 
 @Composable
-fun NavGraph(navController: NavHostController) {
+fun NavGraph(navController: NavHostController, userViewModel: UserViewModel = viewModel()) {
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
         composable(Screen.Splash.route) {
             SplashScreen(navController = navController)
         }
         composable(Screen.SignIn.route) {
-            SignInScreen(navController = navController)
+            SignInScreen(navController = navController, userViewModel = userViewModel)
         }
         composable(Screen.SignUp.route) {
-            SignUpScreen(navController = navController)
+            SignUpScreen(navController = navController, userViewModel = userViewModel)
         }
-        composable(
-            route = "${Screen.Profile.route}/{name}/{phonenumber}/{email}",
-            arguments = listOf(
-                navArgument("name") { defaultValue = "" },
-                navArgument("phonenumber") { defaultValue = "" },  // Treat as String
-                navArgument("email") { defaultValue = "" }
-            )
-        ) { backStackEntry ->
-            // Extract the passed arguments
-            val name = backStackEntry.arguments?.getString("name") ?: ""
-            val phonenumber = backStackEntry.arguments?.getString("phonenumber") ?: ""  // Changed to String
-            val email = backStackEntry.arguments?.getString("email") ?: ""
-
-            // Pass arguments to ProfileScreen
-            ProfileScreen(
-                navController = navController,
-                name = name,
-                phonenumber = phonenumber,
-                email = email
-            )
+        composable(Screen.Profile.route) {
+            ProfileScreen(navController = navController, userViewModel = userViewModel)
         }
         composable(Screen.Home.route) {
             HomeScreen(navController = navController)
         }
-        // Add other routes here if needed
     }
 }
 
 // Define the screens in your app
 sealed class Screen(val route: String) {
-    data object Splash : Screen("splash")
-    data object SignIn : Screen("sign_in")
-    data object Home : Screen("home")
-    data object SignUp : Screen("sign_up")
-    data object Profile : Screen("profile")
-    // Add other screen objects here if needed
+    object Splash : Screen("splash")
+    object SignIn : Screen("sign_in")
+    object Home : Screen("home")
+    object SignUp : Screen("sign_up")
+    object Profile : Screen("profile")
 }

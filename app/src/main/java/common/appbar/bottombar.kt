@@ -29,17 +29,20 @@ fun BottomBar(
         items.forEach { item ->
             NavigationBarItem(
                 icon = { Icon(item.icon, contentDescription = item.name) },
-                selected = currentScreen == item.name,
+                selected = currentScreen == item.route,
                 onClick = {
-                    when (item.route) {
-                        Screen.Profile.route -> {
-                            // Navigate to Profile with placeholder values
-                            // Replace these with actual user data when available
-                            navController.navigate("${Screen.Profile.route}/User/1234567890/user@example.com")
+                    // Navigate to the selected screen
+                    if (navController.currentDestination?.route != item.route) {
+                        navController.navigate(item.route) {
+                            // Avoid multiple copies of the same destination in the back stack
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        else -> navController.navigate(item.route)
                     }
-                    onItemSelected(item.name)
+                    onItemSelected(item.route)
                 },
                 label = { Text(item.name) },
                 alwaysShowLabel = true,
