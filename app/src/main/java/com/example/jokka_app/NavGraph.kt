@@ -35,9 +35,9 @@ fun NavGraph(navController: NavHostController, userViewModel: UserViewModel = vi
 
 // Define the screens in your app
 sealed class Screen(val route: String) {
-    object Splash : Screen("splash")
-    object SignIn : Screen("sign_in")
-    object Home : Screen("home")
-    object SignUp : Screen("sign_up")
-    object Profile : Screen("profile")
+    data object Splash : Screen("splash")
+    data object SignIn : Screen("sign_in")
+    data object Home : Screen("home")
+    data object SignUp : Screen("sign_up")
+    data object Profile : Screen("profile")
 }
