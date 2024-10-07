@@ -33,6 +33,7 @@ import common.textfield.TextField
 fun SignUpScreen(navController: NavController) {
     // State to hold the values for name, email, password, and confirm password
     val (name, setName) = remember { mutableStateOf("") }
+    val (phonenumber, setPhonenumber) = remember { mutableStateOf("") }
     val (email, setEmail) = remember { mutableStateOf("") }
     val (password, setPassword) = remember { mutableStateOf("") }
     val (confirmPassword, setConfirmPassword) = remember { mutableStateOf("") }
@@ -59,6 +60,17 @@ fun SignUpScreen(navController: NavController) {
                 onValueChange = setName,
                 placeholderText = "Name",
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
+            )
+
+            //Phone Number Input Field
+            TextField(
+                value = phonenumber,
+                onValueChange = setPhonenumber,
+                placeholderText = "Phone Number",
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Phone,
+                    imeAction = ImeAction.Next
+                )
             )
 
             // Email Input Field
