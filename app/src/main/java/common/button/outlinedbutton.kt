@@ -23,10 +23,11 @@ fun OutlinedButton(
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
-            .height(56.dp),
+            .height(48.dp),
         shape = RoundedCornerShape(12.dp),
-        border = ButtonDefaults.outlinedButtonBorder.copy(width = 1.dp)
+        border = ButtonDefaults.outlinedButtonBorder.copy(width = 1.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White)
     ) {
-        Text(text, color = Color.Red)
+        Text(text, color = Color.Gray)
     }
 }

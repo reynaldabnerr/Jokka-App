@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -206,7 +207,7 @@ fun ClickableFooter(navController: NavController) {
     val annotatedText = buildAnnotatedString {
         append("Already have an account? ")
         pushStringAnnotation(tag = "Sign in", annotation = "Sign in")
-        withStyle(style = SpanStyle(color = Color.Red, fontSize = 16.sp)) {
+        withStyle(style = SpanStyle(color = Color.Red, fontSize = 16.sp, textDecoration = TextDecoration.Underline)) {
             append("Sign in")
         }
         pop()
