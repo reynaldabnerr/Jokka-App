@@ -22,7 +22,7 @@ fun BottomBar(
         val items = listOf(
             BottomBarItem("Home", Icons.Default.Home, Screen.Home.route),
             BottomBarItem("Destination", Icons.Default.Place, "destination"),
-            BottomBarItem("Food", Icons.Default.Menu, "food"),
+            BottomBarItem("Food", Icons.Default.Restaurant, "food"),
             BottomBarItem("Profile", Icons.Default.Person, Screen.Profile.route)
         )
 
