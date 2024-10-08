@@ -105,6 +105,7 @@ fun ProfileScreen(navController: NavController, userViewModel: UserViewModel) {
                     navController.navigate("edit_profile")
                 }
             )
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Log Out Button
             OutlinedButton(

@@ -200,7 +200,7 @@ fun ClickableFooter(navController: NavController) {
     val annotatedText = buildAnnotatedString {
         append("Already have an account? ")
         pushStringAnnotation(tag = "Sign in", annotation = "Sign in")
-        withStyle(style = SpanStyle(color = Color(0xFF6200EE), fontSize = 16.sp)) {
+        withStyle(style = SpanStyle(color = Color.Red, fontSize = 16.sp)) {
             append("Sign in")
         }
         pop()
