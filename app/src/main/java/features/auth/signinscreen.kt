@@ -1,89 +1,164 @@
 package features.auth
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.example.jokka_app.R
 import common.button.Button
 import common.button.OutlinedButton
 import common.textfield.TextField
-import user.UserViewModel
 
 @Composable
-fun SignInScreen(navController: NavController, userViewModel: UserViewModel) {
-    // Use remember to hold state of email and password
-    val (email, setEmail) = remember { mutableStateOf("") }
-    val (password, setPassword) = remember { mutableStateOf("") }
+fun SignInScreen(navController: NavController) {
+    val gradientColors = listOf(
+        Color(0xFFFCE4EC),  // Light pink
+        Color(0xFFF3E5F5),  // Light purple
+        Color(0xFFE8EAF6)   // Light indigo
+    )
 
     Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(colors = gradientColors)
+            )
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Title
-            Text(
-                text = "Sign In",
-                color = Color.Black,
-                style = androidx.compose.material3.MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.padding(bottom = 24.dp)
+            // Status bar (for illustration, actual implementation may vary)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+
+                Row {
+                    // Add status bar icons here
+                }
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // User image
+            Image(
+                painter = painterResource(id = R.drawable.vecteezy_3d_traveller_character_walking_with_confident_36309452), // Replace with actual resource
+                contentDescription = "User sitting with laptop",
+                modifier = Modifier
+                    .size(200.dp)
+                    .clip(RoundedCornerShape(16.dp))
             )
 
-            // Email Input Field with Placeholder
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Text(
+                "Welcome back!",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.W400
+            )
+
+            Text(
+                "Please, Log In.",
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
             TextField(
-                value = email,
-                onValueChange = setEmail,
-                placeholderText = "Email",
-                keyboardOptions = KeyboardOptions.Default.copy(
+                value = "",
+                onValueChange = { },
+                placeholderText = "You email",
+                keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Next
-                )
-            )
-
-            // Password Input Field with Placeholder and Visual Transformation
-            TextField(
-                value = password,
-                onValueChange = setPassword,
-                placeholderText = "Password",
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Done
                 ),
-                visualTransformation = PasswordVisualTransformation() // Hides input with dots
+                visualTransformation = PasswordVisualTransformation()
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Use the custom Button from common.button
+            TextField(
+                value = "",
+                onValueChange = { },
+                placeholderText = "Password",
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
+                visualTransformation = PasswordVisualTransformation()
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
             Button(
                 text = "Sign In",
                 onClick = {
-                    // Navigate to HomeScreen
+                    // Navigate to Home screen
                     navController.navigate("home") {
-                        // Optional: Clear the back stack
-                        popUpTo("sign_in") { inclusive = true }
+                        // Optional: Pop up to the start destination of the graph to
+                        // avoid building up a large stack of destinations
+                        popUpTo(navController.graph.startDestinationId) {
+                            saveState = true
+                        }
+                        // Avoid multiple copies of the same destination when
+                        // reselecting the same item
+                        launchSingleTop = true
+                        // Restore state when reselecting a previously selected item
+                        restoreState = true
                     }
-                },
-                modifier = Modifier.padding(vertical = 8.dp)
+                }
             )
 
-            // Use the custom Outlined Button from common.button
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                HorizontalDivider(
+                    modifier = Modifier
+                        .weight(1f)
+                        .align(Alignment.CenterVertically),
+                    color = Color.Gray
+                )
+                Text(
+                    "or",
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    color = Color.Gray
+                )
+                HorizontalDivider(
+                    modifier = Modifier
+                        .weight(1f)
+                        .align(Alignment.CenterVertically),
+                    color = Color.Gray
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             OutlinedButton(
-                text = "Register",
+                text = "Sign Up",
                 onClick = {
                     // Navigate to SignUpScreen
                     navController.navigate("sign_up")
@@ -91,12 +166,4 @@ fun SignInScreen(navController: NavController, userViewModel: UserViewModel) {
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SignInScreenPreview() {
-    // Provide a mock or empty ViewModel for the preview
-    val mockUserViewModel = UserViewModel()
-    SignInScreen(navController = rememberNavController(), userViewModel = mockUserViewModel)
 }

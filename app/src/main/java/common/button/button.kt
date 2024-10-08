@@ -2,7 +2,6 @@ package common.button
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -16,22 +15,16 @@ import androidx.compose.ui.unit.dp
 fun Button(
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    containerColor: Color = Color.Red,
-    contentColor: Color = Color.White
+    modifier: Modifier = Modifier
 ) {
     Button(
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
-            .height(56.dp)
-            .padding(top = 16.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = containerColor,
-            contentColor = contentColor
-        ),
-        shape = RoundedCornerShape(16.dp)
+            .height(56.dp),
+        shape = RoundedCornerShape(12.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
     ) {
-        Text(text = text, color = contentColor)
+        Text(text, color = Color.White)
     }
 }

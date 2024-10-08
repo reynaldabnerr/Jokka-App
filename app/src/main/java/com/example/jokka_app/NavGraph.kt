@@ -1,11 +1,11 @@
 package com.example.jokka_app
 
+import features.auth.SignInScreen
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import features.auth.SignInScreen
 import features.auth.SignUpScreen
 import features.auth.SplashScreen
 import features.home.HomeScreen
@@ -19,7 +19,7 @@ fun NavGraph(navController: NavHostController, userViewModel: UserViewModel = vi
             SplashScreen(navController = navController)
         }
         composable(Screen.SignIn.route) {
-            SignInScreen(navController = navController, userViewModel = userViewModel)
+            SignInScreen(navController = navController)
         }
         composable(Screen.SignUp.route) {
             SignUpScreen(navController = navController, userViewModel = userViewModel)

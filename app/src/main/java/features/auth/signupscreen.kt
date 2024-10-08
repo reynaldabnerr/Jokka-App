@@ -2,29 +2,34 @@
 
 package features.auth
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.example.jokka_app.R
 import com.example.jokka_app.Screen
 import common.button.Button
 import common.textfield.TextField
@@ -32,7 +37,6 @@ import user.UserViewModel
 
 @Composable
 fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
-    // State to hold the values for name, phone number, email, password, and confirm password
     val (name, setName) = remember { mutableStateOf("") }
     val (phonenumber, setPhonenumber) = remember { mutableStateOf("") }
     val (email, setEmail) = remember { mutableStateOf("") }
@@ -40,23 +44,64 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
     val (confirmPassword, setConfirmPassword) = remember { mutableStateOf("") }
     val (isTermsAccepted, setTermsAccepted) = remember { mutableStateOf(false) }
 
+    val gradientColors = listOf(
+        Color(0xFFFCE4EC),  // Light pink
+        Color(0xFFF3E5F5),  // Light purple
+        Color(0xFFE8EAF6)   // Light indigo
+    )
+
     Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(colors = gradientColors)
+            )
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Title
-            Text(
-                text = "Sign Up",
-                color = Color.Black,
-                style = androidx.compose.material3.MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.padding(bottom = 24.dp)
+            // Status bar (for illustration, actual implementation may vary)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row {
+                    // Add status bar icons here
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // User image
+            Image(
+                painter = painterResource(id = R.drawable.vecteezy_3d_traveller_character_holding_laptop_with_empty_screen_36309462),
+                contentDescription = "User illustration",
+                modifier = Modifier
+                    .size(150.dp)
+                    .clip(RoundedCornerShape(16.dp))
             )
 
-            // Name Input Field
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                "Create Account",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
+            )
+
+            Text(
+                "Please fill in the form to continue",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.Gray
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             TextField(
                 value = name,
                 onValueChange = setName,
@@ -64,7 +109,8 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
             )
 
-            // Phone Number Input Field
+            Spacer(modifier = Modifier.height(8.dp))
+
             TextField(
                 value = phonenumber,
                 onValueChange = setPhonenumber,
@@ -75,7 +121,8 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
                 )
             )
 
-            // Email Input Field
+            Spacer(modifier = Modifier.height(8.dp))
+
             TextField(
                 value = email,
                 onValueChange = setEmail,
@@ -86,7 +133,8 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
                 )
             )
 
-            // Password Input Field
+            Spacer(modifier = Modifier.height(8.dp))
+
             TextField(
                 value = password,
                 onValueChange = setPassword,
@@ -98,7 +146,8 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
                 visualTransformation = PasswordVisualTransformation()
             )
 
-            // Confirm Password Input Field
+            Spacer(modifier = Modifier.height(8.dp))
+
             TextField(
                 value = confirmPassword,
                 onValueChange = setConfirmPassword,
@@ -110,48 +159,48 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
                 visualTransformation = PasswordVisualTransformation()
             )
 
+            Spacer(modifier = Modifier.height(16.dp))
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Checkbox(
                     checked = isTermsAccepted,
                     onCheckedChange = { setTermsAccepted(it) }
                 )
                 Text(
-                    text = "I agree to the Terms and Conditions"
+                    text = "I agree to the Terms and Conditions",
+                    style = MaterialTheme.typography.bodyMedium
                 )
             }
-            // Sign Up Button
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             Button(
-                text = "Sign up",
+                text = "Sign Up",
                 onClick = {
                     if (isTermsAccepted) {
-                        // Update the UserViewModel with the entered data
                         userViewModel.updateUserData(name, phonenumber, email)
-                        // Navigate to the profile screen
                         navController.navigate(Screen.Profile.route)
                     }
                 },
                 modifier = Modifier.alpha(if (isTermsAccepted) 1f else 0.5f)
             )
 
-            // Call the ClickableFooter here to display it
+            Spacer(modifier = Modifier.height(16.dp))
+
             ClickableFooter(navController = navController)
         }
     }
 }
 
-// Move ClickableFooter outside the Column block to make it reusable
 @Composable
 fun ClickableFooter(navController: NavController) {
     val annotatedText = buildAnnotatedString {
         append("Already have an account? ")
-
-        // Annotate "Sign in" for click action
         pushStringAnnotation(tag = "Sign in", annotation = "Sign in")
-        withStyle(style = SpanStyle(color = Color.Red, fontSize = 16.sp)) {
+        withStyle(style = SpanStyle(color = Color(0xFF6200EE), fontSize = 16.sp)) {
             append("Sign in")
         }
         pop()
@@ -159,7 +208,6 @@ fun ClickableFooter(navController: NavController) {
 
     ClickableText(
         text = annotatedText,
-        modifier = Modifier.padding(top = 16.dp),
         onClick = { offset ->
             annotatedText.getStringAnnotations(tag = "Sign in", start = offset, end = offset)
                 .firstOrNull()?.let {
@@ -167,12 +215,4 @@ fun ClickableFooter(navController: NavController) {
                 }
         }
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SignUpScreenPreview() {
-    // Provide a mock or empty ViewModel for the preview
-    val mockUserViewModel = UserViewModel()
-    SignUpScreen(navController = rememberNavController(), userViewModel = mockUserViewModel)
 }
