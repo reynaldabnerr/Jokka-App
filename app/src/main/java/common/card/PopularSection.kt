@@ -12,10 +12,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowForward
@@ -32,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -47,14 +46,15 @@ fun <T> PopularSection(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 8.dp)
             .clip(RoundedCornerShape(24.dp))
-            .shadow(8.dp, RoundedCornerShape(24.dp)),
+            .shadow(26.dp, RoundedCornerShape(24.dp)),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
         ),
         shape = RoundedCornerShape(24.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
+        border = BorderStroke(2.dp, color = Color.LightGray)
     ) {
         Column(
             modifier = Modifier
@@ -79,14 +79,11 @@ fun <T> PopularSection(
                 IconButton(
                     onClick = { /* Handle see all */ },
                     modifier = Modifier
-                        .size(32.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primaryContainer)
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Rounded.ArrowForward,
                         contentDescription = "See all",
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        tint = Color.DarkGray // Change the tint if needed
                     )
                 }
             }
@@ -115,6 +112,8 @@ fun <T> PopularSection(
                                 scaleY = animatedProgress.value,
                                 alpha = animatedProgress.value
                             )
+                            .shadow(8.dp, shape = RoundedCornerShape(16.dp)) // Add shadow here
+                            .background(MaterialTheme.colorScheme.surface)   // Background to enhance shadow visibility
                     ) {
                         itemContent(item)
                     }

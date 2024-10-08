@@ -85,7 +85,7 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
 
             // User image
             Image(
-                painter = painterResource(id = R.drawable.vecteezy_3d_traveller_character_holding_laptop_with_empty_screen_36309462),
+                painter = painterResource(id = R.drawable.signup_widget),
                 contentDescription = "User illustration",
                 modifier = Modifier
                     .size(150.dp)
@@ -188,7 +188,7 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
                 onClick = {
                     if (isTermsAccepted) {
                         userViewModel.updateUserData(name, phonenumber, email)
-                        navController.navigate(Screen.Profile.route)
+                        navController.navigate(Screen.Home.route)
                     }
                 },
                 modifier = Modifier.alpha(if (isTermsAccepted) 1f else 0.5f)

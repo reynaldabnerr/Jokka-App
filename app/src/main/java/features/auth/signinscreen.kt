@@ -66,7 +66,7 @@ fun SignInScreen(navController: NavController) {
 
             // User image
             Image(
-                painter = painterResource(id = R.drawable.vecteezy_3d_traveller_character_walking_with_confident_36309452),
+                painter = painterResource(id = R.drawable.signin_widget),
                 contentDescription = "User sitting with laptop",
                 modifier = Modifier
                     .size(200.dp)

@@ -54,11 +54,11 @@ fun HomeScreen(
     val name = userData.name.ifEmpty { "Unknown User" }
 
     val places = listOf(
-        Place(R.drawable.image1, R.string.travel1, R.string.category1),
-        Place(R.drawable.image2, R.string.travel2, R.string.category2),
-        Place(R.drawable.image3, R.string.travel3, R.string.category3),
-        Place(R.drawable.image4, R.string.travel4, R.string.category4),
-        Place(R.drawable.image5, R.string.travel5, R.string.category5)
+        Place(R.drawable.place1, R.string.travel1, R.string.category1),
+        Place(R.drawable.place2, R.string.travel2, R.string.category2),
+        Place(R.drawable.place3, R.string.travel3, R.string.category3),
+        Place(R.drawable.place4, R.string.travel4, R.string.category4),
+        Place(R.drawable.place5, R.string.travel5, R.string.category5)
     )
 
     val foods = listOf(
