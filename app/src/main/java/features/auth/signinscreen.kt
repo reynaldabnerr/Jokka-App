@@ -69,7 +69,7 @@ fun SignInScreen(navController: NavController) {
                     .clip(RoundedCornerShape(16.dp))
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(48.dp))
 
             Text(
                 "Welcome back!",
