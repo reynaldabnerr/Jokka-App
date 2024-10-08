@@ -1,32 +1,19 @@
 package features.home
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInVertically
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowForward
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,13 +23,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,29 +36,39 @@ import com.example.jokka_app.R
 import common.appbar.AppBar
 import common.appbar.BottomBar
 import common.card.CategoryChip
+import common.card.Food
+import common.card.FoodCard
 import common.card.Place
 import common.card.PlaceCard
+import common.card.PopularSection
 import common.carousel.Carousel
+import kotlinx.coroutines.delay
 import user.UserViewModel
 
 @Composable
 fun HomeScreen(
     navController: NavController,
-    userViewModel: UserViewModel = viewModel() // Use the UserViewModel
+    userViewModel: UserViewModel = viewModel()
 ) {
-    // Observe userData from the ViewModel
     val userData by userViewModel.userData.collectAsState()
-
-    // Provide fallback for empty name
     val name = userData.name.ifEmpty { "Unknown User" }
 
     val places = listOf(
-        Place(R.drawable.image1, R.string.category1),
-        Place(R.drawable.image2, R.string.category2),
-        Place(R.drawable.image3, R.string.category3),
-        Place(R.drawable.image4, R.string.category4),
-        Place(R.drawable.image5, R.string.category5)
+        Place(R.drawable.image1, R.string.travel1, R.string.category1),
+        Place(R.drawable.image2, R.string.travel2, R.string.category2),
+        Place(R.drawable.image3, R.string.travel3, R.string.category3),
+        Place(R.drawable.image4, R.string.travel4, R.string.category4),
+        Place(R.drawable.image5, R.string.travel5, R.string.category5)
     )
+
+    val foods = listOf(
+        Food(R.drawable.food1, R.string.food1, 4.9f, R.string.price1),
+        Food(R.drawable.food2, R.string.food2, 4.8f, R.string.price2),
+        Food(R.drawable.food3, R.string.food3, 4.95f, R.string.price3),
+        Food(R.drawable.food4, R.string.food4, 4.7f, R.string.price4),
+        Food(R.drawable.food5, R.string.food5, 4.2f, R.string.price5)
+    )
+
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -83,6 +76,7 @@ fun HomeScreen(
     var isLoaded by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
+        delay(100) // Small delay for animation
         isLoaded = true
     }
 
@@ -172,77 +166,24 @@ fun HomeScreen(
 
             // Popular Places Section
             item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .clip(RoundedCornerShape(24.dp))
-                        .shadow(8.dp, RoundedCornerShape(24.dp)),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                    ),
-                    shape = RoundedCornerShape(24.dp),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary) // Add border for outlined effect
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(24.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 20.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "Popular Places",
-                                style = MaterialTheme.typography.titleLarge.copy(
-                                    fontSize = 24.sp
-                                ),
-                            )
-
-                            IconButton(
-                                onClick = { /* Handle see all */ },
-                                modifier = Modifier
-                                    .size(32.dp)
-                                    .clip(CircleShape)
-                                    .background(MaterialTheme.colorScheme.primaryContainer)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Rounded.ArrowForward,
-                                    contentDescription = "See all",
-                                    tint = MaterialTheme.colorScheme.onPrimaryContainer
-                                )
-                            }
-                        }
-
-                        LazyRow(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                            contentPadding = PaddingValues(horizontal = 4.dp)
-                        ) {
-                            items(places) { place ->
-                                PlaceCard(
-                                    place = place,
-                                    modifier = Modifier.animateItem(
-                                        fadeInSpec = null,
-                                        fadeOutSpec = null,
-                                        placementSpec = spring(
-                                            dampingRatio = Spring.DampingRatioMediumBouncy,
-                                            stiffness = Spring.StiffnessLow
-                                        )
-                                    )
-                                        .graphicsLayer {
-                                            clip = true
-                                        }
-                                        .clip(RoundedCornerShape(20.dp))
-                                )
-                            }
-                        }
+                PopularSection(
+                    title = "Popular Places",
+                    items = places,
+                    itemContent = { place ->
+                        PlaceCard(place = place)
                     }
-                }
+                )
+            }
+
+            // Food Section
+            item {
+                PopularSection(
+                    title = "Popular Foods",
+                    items = foods,
+                    itemContent = { food ->
+                        FoodCard(food = food)
+                    }
+                )
             }
         }
 
@@ -257,3 +198,4 @@ fun HomeScreen(
         )
     }
 }
+

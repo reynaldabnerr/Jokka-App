@@ -27,7 +27,7 @@ fun CategoryChip(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = stringResource(id = place.stringResourceId),
+                text = stringResource(id = place.categoryResourceId),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface
             )

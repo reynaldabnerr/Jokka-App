@@ -5,4 +5,22 @@
     <string name="travel3">CPI</string>
     <string name="travel4">Masjid 99 Kubah</string>
     <string name="travel5">Ramang-Ramang</string>
+
+    <string name="category1">Historical Sites</string>
+    <string name="category2">Beaches</string>
+    <string name="category3">Parks and Nature</string>
+    <string name="category4">Religious Sites</string>
+    <string name="category5">Caves and Mountains</string>
+
+    <string name="food1">Coto Makassar</string>
+    <string name="food2">Pallubasa</string>
+    <string name="food3">Sop Konro</string>
+    <string name="food4">Pisang Epe</string>
+    <string name="food5">Pisang Ijo</string>
+
+    <string name="price1">Rp 25.000</string>
+    <string name="price2">Rp 25.000</string>
+    <string name="price3">Rp 35.000</string>
+    <string name="price4">Rp 15.000</string>
+    <string name="price5">Rp 20.000</string>
 </resources>
