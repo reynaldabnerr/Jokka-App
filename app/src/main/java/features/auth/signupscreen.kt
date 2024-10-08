@@ -5,9 +5,11 @@ package features.auth
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -37,6 +39,8 @@ import user.UserViewModel
 
 @Composable
 fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
+    val scrollState = rememberScrollState() // Create a scroll state
+
     val (name, setName) = remember { mutableStateOf("") }
     val (phonenumber, setPhonenumber) = remember { mutableStateOf("") }
     val (email, setEmail) = remember { mutableStateOf("") }
@@ -60,7 +64,8 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(scrollState), // Add vertical scroll
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Status bar (for illustration, actual implementation may vary)
@@ -194,6 +199,7 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
         }
     }
 }
+
 
 @Composable
 fun ClickableFooter(navController: NavController) {

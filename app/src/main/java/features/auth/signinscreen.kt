@@ -1,10 +1,10 @@
-package features.auth
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,6 +26,8 @@ import common.textfield.TextField
 
 @Composable
 fun SignInScreen(navController: NavController) {
+    val scrollState = rememberScrollState()
+
     val gradientColors = listOf(
         Color(0xFFFCE4EC),  // Light pink
         Color(0xFFF3E5F5),  // Light purple
@@ -42,7 +44,8 @@ fun SignInScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(scrollState),  // Added scroll functionality
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Status bar (for illustration, actual implementation may vary)
@@ -52,7 +55,6 @@ fun SignInScreen(navController: NavController) {
                     .padding(top = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-
                 Row {
                     // Add status bar icons here
                 }
@@ -62,7 +64,7 @@ fun SignInScreen(navController: NavController) {
 
             // User image
             Image(
-                painter = painterResource(id = R.drawable.vecteezy_3d_traveller_character_walking_with_confident_36309452), // Replace with actual resource
+                painter = painterResource(id = R.drawable.vecteezy_3d_traveller_character_walking_with_confident_36309452),
                 contentDescription = "User sitting with laptop",
                 modifier = Modifier
                     .size(200.dp)
@@ -88,7 +90,7 @@ fun SignInScreen(navController: NavController) {
             TextField(
                 value = "",
                 onValueChange = { },
-                placeholderText = "You email",
+                placeholderText = "Your email",
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Next
@@ -116,15 +118,10 @@ fun SignInScreen(navController: NavController) {
                 onClick = {
                     // Navigate to Home screen
                     navController.navigate("home") {
-                        // Optional: Pop up to the start destination of the graph to
-                        // avoid building up a large stack of destinations
                         popUpTo(navController.graph.startDestinationId) {
                             saveState = true
                         }
-                        // Avoid multiple copies of the same destination when
-                        // reselecting the same item
                         launchSingleTop = true
-                        // Restore state when reselecting a previously selected item
                         restoreState = true
                     }
                 }
@@ -160,7 +157,6 @@ fun SignInScreen(navController: NavController) {
             OutlinedButton(
                 text = "Sign Up",
                 onClick = {
-                    // Navigate to SignUpScreen
                     navController.navigate("sign_up")
                 }
             )
