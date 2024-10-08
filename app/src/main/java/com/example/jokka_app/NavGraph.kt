@@ -1,6 +1,7 @@
 package com.example.jokka_app
 
-import SignInScreen
+import features.profile.ProfileScreen
+import features.auth.SignInScreen
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -9,7 +10,6 @@ import androidx.navigation.compose.composable
 import features.auth.SignUpScreen
 import features.auth.SplashScreen
 import features.home.HomeScreen
-import features.profile.ProfileScreen
 import user.UserViewModel
 
 @Composable
