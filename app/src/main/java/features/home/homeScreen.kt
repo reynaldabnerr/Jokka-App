@@ -39,7 +39,7 @@ import common.card.CategoryChip
 import common.card.Food
 import common.card.FoodCard
 import common.card.Place
-import common.card.PlaceCard
+import common.card.PlaceHomeCard
 import common.card.PopularSection
 import common.carousel.Carousel
 import kotlinx.coroutines.delay
@@ -54,11 +54,11 @@ fun HomeScreen(
     val name = userData.name.ifEmpty { "Unknown User" }
 
     val places = listOf(
-        Place(R.drawable.place1, R.string.travel1, R.string.category1),
-        Place(R.drawable.place2, R.string.travel2, R.string.category2),
-        Place(R.drawable.place3, R.string.travel3, R.string.category3),
-        Place(R.drawable.place4, R.string.travel4, R.string.category4),
-        Place(R.drawable.place5, R.string.travel5, R.string.category5)
+        Place(R.drawable.place1, R.string.destination1, R.string.category1, R.string.category1),
+        Place(R.drawable.place2, R.string.destination2, R.string.category2, R.string.category1),
+        Place(R.drawable.place3, R.string.destination3, R.string.category3, R.string.category1),
+        Place(R.drawable.place4, R.string.destination4, R.string.category4, R.string.category1),
+        Place(R.drawable.place5, R.string.destination5, R.string.category5, R.string.category1)
     )
 
     val foods = listOf(
@@ -68,7 +68,6 @@ fun HomeScreen(
         Food(R.drawable.food4, R.string.food4, 4.7f, R.string.price4),
         Food(R.drawable.food5, R.string.food5, 4.2f, R.string.price5)
     )
-
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -167,7 +166,12 @@ fun HomeScreen(
                     title = "Popular Places",
                     items = places,
                     itemContent = { place ->
-                        PlaceCard(place = place)
+                        PlaceHomeCard(
+                            place = place,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                        )
                     }
                 )
             }
@@ -195,4 +199,3 @@ fun HomeScreen(
         )
     }
 }
-

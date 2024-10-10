@@ -1,26 +1,45 @@
 <resources>
     <string name="app_name">Jokka App</string>
-    <string name="travel1">Benteng Rotterdam</string>
-    <string name="travel2">Pantai Losari</string>
-    <string name="travel3">CPI</string>
-    <string name="travel4">Masjid 99 Kubah</string>
-    <string name="travel5">Ramang-Ramang</string>
 
+    <!-- Destinations -->
+    <string name="destination1">Benteng Rotterdam</string>
+    <string name="destination2">Pantai Losari</string>
+    <string name="destination3">CPI</string>
+    <string name="destination4">Masjid 99 Kubah</string>
+    <string name="destination5">Ramang-Ramang</string>
+
+    <!-- Categories -->
     <string name="category1">Historical Sites</string>
     <string name="category2">Beaches</string>
     <string name="category3">Parks and Nature</string>
     <string name="category4">Religious Sites</string>
     <string name="category5">Mountains</string>
 
+    <!-- Foods -->
     <string name="food1">Coto Makassar</string>
     <string name="food2">Pallubasa</string>
     <string name="food3">Sop Konro</string>
     <string name="food4">Pisang Epe</string>
     <string name="food5">Pisang Ijo</string>
 
+    <!-- Prices -->
     <string name="price1">Rp 25.000</string>
     <string name="price2">Rp 25.000</string>
     <string name="price3">Rp 35.000</string>
     <string name="price4">Rp 15.000</string>
     <string name="price5">Rp 20.000</string>
+
+    <!-- Food Descriptions -->
+    <string name="food_description1">Coto Makassar is a traditional beef soup from Makassar, South Sulawesi. It is made from a combination of beef, offal, and a rich broth made with peanuts and various spices. It is usually served with ketupat (rice cakes).</string>
+    <string name="food_description2">Pallubasa is another traditional soup dish from Makassar, similar to Coto but with a richer and thicker broth. It is made from beef or buffalo meat, cooked with coconut milk and served with raw egg and rice.</string>
+    <string name="food_description3">Sop Konro is a savory beef rib soup that is flavored with rich spices like coriander, cinnamon, and nutmeg. The ribs are tender, and the broth is bold and hearty, making it a favorite in Makassar cuisine.</string>
+    <string name="food_description4">Pisang Epe is a popular street food made from grilled flattened bananas, typically served with palm sugar syrup. It is a sweet and simple snack, often enjoyed while strolling along Losari Beach.</string>
+    <string name="food_description5">Pisang Ijo is a refreshing dessert made from bananas wrapped in green rice flour dough, served with coconut milk and syrup. It is a must-try dessert in Makassar, especially during the hot weather.</string>
+
+    <!-- Destination Descriptions -->
+    <string name="destination_description1">Benteng Rotterdam is a historical fortress located in Makassar. Built during the Dutch colonial period, this site is a popular tourist destination and a symbol of the city is rich history.</string>
+    <string name="destination_description2">Pantai Losari is a famous beach in Makassar, known for its picturesque sunsets and vibrant atmosphere. It is a favorite spot for locals and tourists alike to relax by the seaside.</string>
+    <string name="destination_description3">CPI, or Center Point of Indonesia, is a modern landmark in Makassar. This urban development area offers shopping, dining, and recreational activities by the waterfront.</string>
+    <string name="destination_description4">Masjid 99 Kubah is a mosque in Makassar known for its unique architectural design featuring 99 domes. It is an iconic religious site and a beautiful place to visit, especially during sunset.</string>
+    <string name="destination_description5">Ramang-Ramang is a natural wonder located in South Sulawesi. It is one of the largest karst areas in the world, featuring stunning limestone cliffs and scenic boat rides along the river.</string>
 </resources>

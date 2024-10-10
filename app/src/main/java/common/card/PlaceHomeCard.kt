@@ -31,16 +31,20 @@ import androidx.compose.ui.unit.dp
 data class Place(
     val imageResourceId: Int,
     val stringResourceId: Int,
-    val categoryResourceId: Int // Add the category resource ID here
+    val categoryResourceId: Int, // Add the category resource ID here
+    val category1: Int
 )
 
 
 @Composable
-fun PlaceCard(place: Place, modifier: Modifier = Modifier) {
+fun PlaceHomeCard(
+    place: Place,
+    modifier: Modifier = Modifier,
+) {
     Card(
         modifier = modifier
-            .width(160.dp) // Matches the width of FoodCard
-            .height(200.dp), // Matches the height of FoodCard
+            .width(160.dp) // Matches the width of common.cardScreen.FoodCard
+            .height(200.dp), // Matches the height of common.cardScreen.FoodCard
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp) // Consistent elevation
     ) {

@@ -62,13 +62,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.coil.compose)
-
-    // Remove this line as it's a duplicate
-    // implementation(libs.androidx.material3)
-
-    // Remove this line as it's not using the version catalog
-    // implementation "androidx.compose.material3:material3:1.x.x"
-
+    implementation(libs.androidx.datastore.preferences.core.jvm)
+    implementation(libs.androidx.datastore.preferences.core.jvm)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -76,4 +71,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
 }
