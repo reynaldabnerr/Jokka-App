@@ -76,7 +76,7 @@ fun SignInScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(48.dp))
 
             Text(
-                "Welcome back!",
+                "Hello Jokkers!",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.W400
             )
