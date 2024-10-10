@@ -93,10 +93,7 @@ fun HomeScreen(
             )
     ) {
         AppBar(
-            title = "Welcome",
-            onNavigationIconClick = {
-                // Handle back button click if needed
-            }
+            title = "Welcome"
         )
 
         LazyColumn(

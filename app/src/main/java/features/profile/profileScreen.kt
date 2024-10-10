@@ -45,10 +45,7 @@ fun ProfileScreen(navController: NavController, userViewModel: UserViewModel) {
     Scaffold(
         topBar = {
             AppBar(
-                title = "Profile",
-                onNavigationIconClick = {
-                    // Handle back button action if needed
-                }
+                title = "Profile"
             )
         },
         bottomBar = {
