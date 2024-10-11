@@ -170,7 +170,6 @@ fun HomeScreen(
                             place = place,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = 8.dp)
                         )
                     }
                 )

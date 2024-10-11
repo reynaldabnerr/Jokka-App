@@ -6,6 +6,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.jokka_app.Screen
 
@@ -45,7 +48,14 @@ fun BottomBar(
                     }
                     onItemSelected(item.route)
                 },
-                label = { Text(item.name) },
+                label = {
+                    Text(
+                        text = item.name,
+                        fontSize = 10.sp, // Set the font size smaller
+                        fontWeight = FontWeight.Normal,
+                        textAlign = TextAlign.Center
+                    )
+                },
                 alwaysShowLabel = true,
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = Color.Red,
