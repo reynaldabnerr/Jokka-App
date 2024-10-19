@@ -11,9 +11,7 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -40,14 +38,19 @@ import user.UserViewModel
 
 @Composable
 fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
-    val scrollState = rememberScrollState() // Create a scroll state
+    val scrollState = rememberScrollState()
 
-    val (name, setName) = remember { mutableStateOf("") }
-    val (phonenumber, setPhonenumber) = remember { mutableStateOf("") }
-    val (email, setEmail) = remember { mutableStateOf("") }
-    val (password, setPassword) = remember { mutableStateOf("") }
-    val (confirmPassword, setConfirmPassword) = remember { mutableStateOf("") }
-    val (isTermsAccepted, setTermsAccepted) = remember { mutableStateOf(false) }
+    var name by remember { mutableStateOf("") }
+    var phonenumber by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
+    var isTermsAccepted by remember { mutableStateOf(false) }
+
+    // Snackbar state
+    var showSnackbar by remember { mutableStateOf(false) }
+    var snackbarMessage by remember { mutableStateOf("") }
+    val snackbarHostState = remember { SnackbarHostState() }
 
     val gradientColors = listOf(
         Color(0xFFFCE4EC),  // Light pink
@@ -66,10 +69,10 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
-                .verticalScroll(scrollState), // Add vertical scroll
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Status bar (for illustration, actual implementation may vary)
+            // Status bar
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -83,7 +86,6 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // User image
             Image(
                 painter = painterResource(id = R.drawable.signup_widget),
                 contentDescription = "User illustration",
@@ -110,7 +112,7 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
 
             TextField(
                 value = name,
-                onValueChange = setName,
+                onValueChange = { name = it },
                 placeholderText = "Name",
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
             )
@@ -119,7 +121,7 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
 
             TextField(
                 value = phonenumber,
-                onValueChange = setPhonenumber,
+                onValueChange = { phonenumber = it },
                 placeholderText = "Phone Number",
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Phone,
@@ -131,7 +133,7 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
 
             TextField(
                 value = email,
-                onValueChange = setEmail,
+                onValueChange = { email = it },
                 placeholderText = "Email",
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Email,
@@ -143,7 +145,7 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
 
             TextField(
                 value = password,
-                onValueChange = setPassword,
+                onValueChange = { password = it },
                 placeholderText = "Password",
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Password,
@@ -156,7 +158,7 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
 
             TextField(
                 value = confirmPassword,
-                onValueChange = setConfirmPassword,
+                onValueChange = { confirmPassword = it },
                 placeholderText = "Confirm Password",
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Password,
@@ -173,7 +175,7 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
             ) {
                 Checkbox(
                     checked = isTermsAccepted,
-                    onCheckedChange = { setTermsAccepted(it) }
+                    onCheckedChange = { isTermsAccepted = it }
                 )
                 Text(
                     text = "I agree to the Terms and Conditions",
@@ -186,9 +188,24 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
             Button(
                 text = "Sign Up",
                 onClick = {
-                    if (isTermsAccepted) {
-                        userViewModel.updateUserData(name, phonenumber, email)
-                        navController.navigate(Screen.Home.route)
+                    when {
+                        !isTermsAccepted -> {
+                            snackbarMessage = "Please accept the Terms and Conditions"
+                            showSnackbar = true
+                        }
+                        name.isEmpty() || phonenumber.isEmpty() || email.isEmpty() ||
+                                password.isEmpty() || confirmPassword.isEmpty() -> {
+                            snackbarMessage = "Please fill in all fields"
+                            showSnackbar = true
+                        }
+                        password != confirmPassword -> {
+                            snackbarMessage = "Passwords do not match"
+                            showSnackbar = true
+                        }
+                        else -> {
+                            userViewModel.updateUserData(name, phonenumber, email)
+                            navController.navigate(Screen.Home.route)
+                        }
                     }
                 },
                 modifier = Modifier.alpha(if (isTermsAccepted) 1f else 0.5f)
@@ -198,9 +215,34 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
 
             ClickableFooter(navController = navController)
         }
+
+        // Snackbar
+        if (showSnackbar) {
+            LaunchedEffect(snackbarHostState) {
+                snackbarHostState.showSnackbar(
+                    message = snackbarMessage,
+                    duration = SnackbarDuration.Short
+                )
+                showSnackbar = false
+            }
+        }
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 16.dp)
+        ) { data ->
+            Snackbar(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                containerColor = MaterialTheme.colorScheme.errorContainer,
+                contentColor = MaterialTheme.colorScheme.onErrorContainer,
+            ) {
+                Text(data.visuals.message)
+            }
+        }
     }
 }
-
 
 @Composable
 fun ClickableFooter(navController: NavController) {

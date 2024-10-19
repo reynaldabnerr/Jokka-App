@@ -8,7 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,6 +30,14 @@ import common.textfield.TextField
 fun SignInScreen(navController: NavController) {
     val scrollState = rememberScrollState()
 
+    // State management
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var showSnackbar by remember { mutableStateOf(false) }
+    var snackbarMessage by remember { mutableStateOf("") }
+
+    val snackbarHostState = remember { SnackbarHostState() }
+
     val gradientColors = listOf(
         Color(0xFFFCE4EC),  // Light pink
         Color(0xFFF3E5F5),  // Light purple
@@ -47,7 +55,7 @@ fun SignInScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
-                .verticalScroll(scrollState),  // Added scroll functionality
+                .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Status bar (for illustration, actual implementation may vary)
@@ -64,7 +72,6 @@ fun SignInScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // User image
             Image(
                 painter = painterResource(id = R.drawable.signin_widget),
                 contentDescription = "User sitting with laptop",
@@ -90,21 +97,20 @@ fun SignInScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(24.dp))
 
             TextField(
-                value = "",
-                onValueChange = { },
+                value = email,
+                onValueChange = { email = it },
                 placeholderText = "Your email",
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Next
-                ),
-                visualTransformation = PasswordVisualTransformation()
+                )
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             TextField(
-                value = "",
-                onValueChange = { },
+                value = password,
+                onValueChange = { password = it },
                 placeholderText = "Password",
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
@@ -118,13 +124,29 @@ fun SignInScreen(navController: NavController) {
             Button(
                 text = "Sign In",
                 onClick = {
-                    // Navigate to Home screen
-                    navController.navigate("home") {
-                        popUpTo(navController.graph.startDestinationId) {
-                            saveState = true
+                    when {
+                        email.isEmpty() && password.isEmpty() -> {
+                            snackbarMessage = "Please fill in email and password"
+                            showSnackbar = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
+                        email.isEmpty() -> {
+                            snackbarMessage = "Please fill in email"
+                            showSnackbar = true
+                        }
+                        password.isEmpty() -> {
+                            snackbarMessage = "Please fill in password"
+                            showSnackbar = true
+                        }
+                        else -> {
+                            // Navigate to Home screen
+                            navController.navigate("home") {
+                                popUpTo(navController.graph.startDestinationId) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        }
                     }
                 }
             )
@@ -162,6 +184,32 @@ fun SignInScreen(navController: NavController) {
                     navController.navigate("sign_up")
                 }
             )
+        }
+
+        // Snackbar
+        if (showSnackbar) {
+            LaunchedEffect(snackbarHostState) {
+                snackbarHostState.showSnackbar(
+                    message = snackbarMessage,
+                    duration = SnackbarDuration.Short
+                )
+                showSnackbar = false
+            }
+        }
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 16.dp)
+        ) { data ->
+            Snackbar(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                containerColor = MaterialTheme.colorScheme.errorContainer,
+                contentColor = MaterialTheme.colorScheme.onErrorContainer,
+            ) {
+                Text(data.visuals.message)
+            }
         }
     }
 }
