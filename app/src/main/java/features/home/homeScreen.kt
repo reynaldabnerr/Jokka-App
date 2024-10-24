@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,6 +37,8 @@ import com.example.jokka_app.R
 import common.appbar.AppBar
 import common.appbar.BottomBar
 import common.card.CategoryChip
+import common.card.Event
+import common.card.EventHomeCard
 import common.card.Food
 import common.card.FoodCard
 import common.card.Place
@@ -68,6 +71,30 @@ fun HomeScreen(
         Food(R.drawable.food4, R.string.food4, 4.7f, R.string.price4),
         Food(R.drawable.food5, R.string.food5, 4.2f, R.string.price5)
     )
+    val events = listOf(
+        Event(
+            R.drawable.events1,
+            R.string.event1,
+            "28 Oct 2024",
+            "Fort Rotterdam",
+            "F8 Makassar"
+        ),
+        Event(
+            R.drawable.events2,
+            R.string.event2,
+            "5 Nov 2024",
+            "Pantai Losari",
+            "Jokka-Jokka Makassar"
+        ),
+        Event(
+            R.drawable.events3,
+            R.string.event3,
+            "12 Nov 2024",
+            "Trans Studio",
+            "Music Concert"
+        )
+    )
+
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -116,11 +143,13 @@ fun HomeScreen(
                     ) {
                         Text(
                             text = "Hello, $name",
+                            fontFamily = FontFamily.Monospace,
                             style = MaterialTheme.typography.headlineSmall,
                             color = Color.Gray
                         )
                         Text(
-                            text = "Where to next?",
+                            text = "Welcome to Makassar ✨",
+                            fontFamily = FontFamily.Monospace,
                             style = MaterialTheme.typography.headlineMedium,
                             fontWeight = FontWeight.Bold
                         )
@@ -130,12 +159,6 @@ fun HomeScreen(
 
             // Featured Places Carousel
             item {
-                Text(
-                    text = "Featured Places",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 12.dp)
-                )
                 Carousel(
                     places = places.take(3)
                 )
@@ -146,6 +169,7 @@ fun HomeScreen(
                 Text(
                     text = "Categories",
                     fontSize = 20.sp,
+                    fontFamily = FontFamily.Monospace,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 12.dp)
                 )
@@ -163,7 +187,7 @@ fun HomeScreen(
             // Popular Places Section
             item {
                 PopularSection(
-                    title = "Popular Places",
+                    title = "Popular Places \uD83C\uDFDB\uFE0F \uD83D\uDDFA\uFE0F",
                     items = places,
                     itemContent = { place ->
                         PlaceHomeCard(
@@ -178,14 +202,34 @@ fun HomeScreen(
             // Food Section
             item {
                 PopularSection(
-                    title = "Popular Foods",
+                    title = "Popular Foods \uD83C\uDF5C",
                     items = foods,
                     itemContent = { food ->
                         FoodCard(food = food)
                     }
                 )
             }
+
+            // Events Section
+            item {
+                Text(
+                    text = "What's Happening in Makassar?",
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily.Monospace,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
+                PopularSection(
+                    title = "Events in Makassar",
+                    items = events, // Use the events list here
+                    itemContent = { event ->
+                        EventHomeCard(event = event, modifier = Modifier.fillMaxWidth()) // Display each event using EventHomeCard
+                    }
+                )
+            }
         }
+
+
 
         BottomBar(
             currentScreen = currentRoute ?: "",

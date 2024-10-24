@@ -42,4 +42,14 @@
     <string name="destination_description3">CPI, or Center Point of Indonesia, is a modern landmark in Makassar. This urban development area offers shopping, dining, and recreational activities by the waterfront.</string>
     <string name="destination_description4">Masjid 99 Kubah is a mosque in Makassar known for its unique architectural design featuring 99 domes. It is an iconic religious site and a beautiful place to visit, especially during sunset.</string>
     <string name="destination_description5">Ramang-Ramang is a natural wonder located in South Sulawesi. It is one of the largest karst areas in the world, featuring stunning limestone cliffs and scenic boat rides along the river.</string>
+
+        <!-- Event Titles -->
+    <string name="event1">Cultural Festival</string>
+    <string name="event2">Food Festival</string>
+    <string name="event3">Music Concert</string>
+
+        <!-- Event Descriptions -->
+    <string name="event_description1">Join us for an exciting Cultural Festival at Fort Rotterdam on 28 Oct 2024!</string>
+    <string name="event_description2">Savor delicious local and international cuisines at the Food Festival on 5 Nov 2024 at Pantai Losari!</string>
+    <string name="event_description3">Enjoy a night of great music at the Music Concert on 12 Nov 2024 at Trans Studio!</string>
 </resources>
