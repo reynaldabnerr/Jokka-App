@@ -22,7 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import common.card.Place
+import common.cardHome.Place
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

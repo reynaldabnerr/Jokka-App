@@ -1,4 +1,4 @@
-package common.card
+package common.cardHome
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape

@@ -36,14 +36,14 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.jokka_app.R
 import common.appbar.AppBar
 import common.appbar.BottomBar
-import common.card.CategoryChip
-import common.card.Event
-import common.card.EventHomeCard
-import common.card.Food
-import common.card.FoodCard
-import common.card.Place
-import common.card.PlaceHomeCard
-import common.card.PopularSection
+import common.cardHome.CategoryChip
+import common.cardHome.EventHome
+import common.cardHome.EventHomeCard
+import common.cardHome.Food
+import common.cardHome.FoodCard
+import common.cardHome.Place
+import common.cardHome.PlaceHomeCard
+import common.cardHome.PopularSection
 import common.carousel.Carousel
 import kotlinx.coroutines.delay
 import user.UserViewModel
@@ -72,21 +72,21 @@ fun HomeScreen(
         Food(R.drawable.food5, R.string.food5, 4.2f, R.string.price5)
     )
     val events = listOf(
-        Event(
+        EventHome(
             R.drawable.events1,
             R.string.event1,
             "28 Oct 2024",
             "Fort Rotterdam",
             "F8 Makassar"
         ),
-        Event(
+        EventHome(
             R.drawable.events2,
             R.string.event2,
             "5 Nov 2024",
             "Pantai Losari",
             "Jokka-Jokka Makassar"
         ),
-        Event(
+        EventHome(
             R.drawable.events3,
             R.string.event3,
             "12 Nov 2024",

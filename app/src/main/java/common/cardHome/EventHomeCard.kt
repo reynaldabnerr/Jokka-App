@@ -1,4 +1,4 @@
-package common.card
+package common.cardHome
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -23,7 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
-data class Event(
+data class EventHome(
     val image: Int,
     val name: Int,
     val date: String,
@@ -33,7 +33,7 @@ data class Event(
 
 @Composable
 fun EventHomeCard(
-    event: Event,
+    event: EventHome,
     modifier: Modifier = Modifier
 ) {
     Card(
