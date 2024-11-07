@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package features.auth
 
 import android.app.Activity
