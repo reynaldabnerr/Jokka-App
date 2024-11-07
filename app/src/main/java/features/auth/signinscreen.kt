@@ -1,5 +1,8 @@
 package features.auth
 
+import android.app.Activity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -25,6 +29,10 @@ import com.example.jokka_app.R
 import common.button.Button
 import common.button.OutlinedButton
 import common.textfield.TextField
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 
 @Composable
 fun SignInScreen(navController: NavController) {
@@ -37,18 +45,39 @@ fun SignInScreen(navController: NavController) {
     var snackbarMessage by remember { mutableStateOf("") }
 
     val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+    val auth = FirebaseAuth.getInstance()
 
-    val gradientColors = listOf(
-        Color(0xFFFCE4EC),  // Light pink
-        Color(0xFFF3E5F5),  // Light purple
-        Color(0xFFE8EAF6)   // Light indigo
+    // Configure Google Sign-In and GoogleSignInClient
+    val googleSignInClient = GoogleSignIn.getClient(
+        context as Activity,
+        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(context.getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
     )
+
+    // Google Sign-In launcher
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        if (task.isSuccessful) {
+            val account = task.result
+            account?.let {
+                firebaseAuthWithGoogle(it.idToken, auth, navController) // Authenticate with Firebase
+            }
+        } else {
+            snackbarMessage = "Google sign-in failed."
+            showSnackbar = true
+        }
+    }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(
-                brush = Brush.verticalGradient(colors = gradientColors)
+                brush = Brush.verticalGradient(colors = listOf(Color(0xFFFCE4EC), Color(0xFFF3E5F5), Color(0xFFE8EAF6)))
             )
     ) {
         Column(
@@ -58,18 +87,6 @@ fun SignInScreen(navController: NavController) {
                 .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Status bar (for illustration, actual implementation may vary)
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Row {
-                    // Add status bar icons here
-                }
-            }
-
             Spacer(modifier = Modifier.height(32.dp))
 
             Image(
@@ -82,28 +99,15 @@ fun SignInScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(48.dp))
 
-            Text(
-                "Hello Jokkers!",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.W400
-            )
-
-            Text(
-                "Please, Log In.",
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Bold
-            )
-
+            Text("Hello Jokkers!", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.W400)
+            Text("Please, Log In.", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(24.dp))
 
             TextField(
                 value = email,
                 onValueChange = { email = it },
                 placeholderText = "Your email",
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Email,
-                    imeAction = ImeAction.Next
-                )
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next)
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -112,40 +116,23 @@ fun SignInScreen(navController: NavController) {
                 value = password,
                 onValueChange = { password = it },
                 placeholderText = "Password",
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Done
-                ),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
                 visualTransformation = PasswordVisualTransformation()
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            // Email/Password Sign-In button
             Button(
                 text = "Sign In",
                 onClick = {
-                    when {
-                        email.isEmpty() && password.isEmpty() -> {
-                            snackbarMessage = "Please fill in email and password"
+                    if (email.isEmpty() || password.isEmpty()) {
+                        snackbarMessage = "Please fill in email and password"
+                        showSnackbar = true
+                    } else {
+                        firebaseAuthWithEmailPassword(email, password, auth, navController) {
+                            snackbarMessage = it // Show error if any
                             showSnackbar = true
-                        }
-                        email.isEmpty() -> {
-                            snackbarMessage = "Please fill in email"
-                            showSnackbar = true
-                        }
-                        password.isEmpty() -> {
-                            snackbarMessage = "Please fill in password"
-                            showSnackbar = true
-                        }
-                        else -> {
-                            // Navigate to Home screen
-                            navController.navigate("home") {
-                                popUpTo(navController.graph.startDestinationId) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
                         }
                     }
                 }
@@ -157,36 +144,27 @@ fun SignInScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                HorizontalDivider(
-                    modifier = Modifier
-                        .weight(1f)
-                        .align(Alignment.CenterVertically),
-                    color = Color.Gray
-                )
-                Text(
-                    "or",
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    color = Color.Gray
-                )
-                HorizontalDivider(
-                    modifier = Modifier
-                        .weight(1f)
-                        .align(Alignment.CenterVertically),
-                    color = Color.Gray
-                )
+                Divider(modifier = Modifier.weight(1f).align(Alignment.CenterVertically), color = Color.Gray)
+                Text("or", modifier = Modifier.padding(horizontal = 16.dp), color = Color.Gray)
+                Divider(modifier = Modifier.weight(1f).align(Alignment.CenterVertically), color = Color.Gray)
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Google Sign-In button
+            Button(
+                text = "Sign in with Google",
+                onClick = { launcher.launch(googleSignInClient.signInIntent) }
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedButton(
                 text = "Sign Up",
-                onClick = {
-                    navController.navigate("sign_up")
-                }
+                onClick = { navController.navigate("sign_up") }
             )
         }
 
-        // Snackbar
         if (showSnackbar) {
             LaunchedEffect(snackbarHostState) {
                 snackbarHostState.showSnackbar(
@@ -199,17 +177,48 @@ fun SignInScreen(navController: NavController) {
 
         SnackbarHost(
             hostState = snackbarHostState,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 16.dp)
+            modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 16.dp)
         ) { data ->
             Snackbar(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 containerColor = MaterialTheme.colorScheme.errorContainer,
                 contentColor = MaterialTheme.colorScheme.onErrorContainer,
-            ) {
-                Text(data.visuals.message)
-            }
+            ) { Text(data.visuals.message) }
         }
     }
+}
+
+// Firebase authentication with Google
+private fun firebaseAuthWithGoogle(idToken: String?, auth: FirebaseAuth, navController: NavController) {
+    val credential = GoogleAuthProvider.getCredential(idToken, null)
+    auth.signInWithCredential(credential)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                navController.navigate("home") {
+                    popUpTo("sign_in") { inclusive = true }
+                }
+            } else {
+                // Log an error or display a snackbar on failure
+            }
+        }
+}
+
+// Firebase authentication with email/password
+private fun firebaseAuthWithEmailPassword(
+    email: String,
+    password: String,
+    auth: FirebaseAuth,
+    navController: NavController,
+    onError: (String) -> Unit
+) {
+    auth.signInWithEmailAndPassword(email, password)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                navController.navigate("home") {
+                    popUpTo("sign_in") { inclusive = true }
+                }
+            } else {
+                onError(task.exception?.message ?: "Email sign-in failed")
+            }
+        }
 }

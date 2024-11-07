@@ -52,4 +52,6 @@
     <string name="event_description1">Join us for an exciting Cultural Festival at Fort Rotterdam on 28 Oct 2024!</string>
     <string name="event_description2">Savor delicious local and international cuisines at the Food Festival on 5 Nov 2024 at Pantai Losari!</string>
     <string name="event_description3">Enjoy a night of great music at the Music Concert on 12 Nov 2024 at Trans Studio!</string>
+
+    <string name="default_web_client_id">864377506222-7qvvjjorq8e37kefh738o71btonjq4im.apps.googleusercontent.com</string>
 </resources>

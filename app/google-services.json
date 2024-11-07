@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "864377506222",
+    "project_id": "jokka-1d960",
+    "storage_bucket": "jokka-1d960.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864377506222:android:983c1acd27667cd0aae03f",
+        "android_client_info": {
+          "package_name": "com.example.jokka_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBobGswI61vZd_gLbfZLvA5szltT_KF404"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
