@@ -1,7 +1,8 @@
 package com.example.jokka_app
 
 
-import user.UserViewModel
+
+import UserViewModel
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController

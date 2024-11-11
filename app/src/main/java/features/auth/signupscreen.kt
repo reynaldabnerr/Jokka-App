@@ -3,7 +3,8 @@
 package features.auth
 
 
-import user.UserViewModel
+
+import UserViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

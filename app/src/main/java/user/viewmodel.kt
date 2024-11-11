@@ -1,5 +1,3 @@
-package user
-
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -22,6 +20,22 @@ class UserViewModel : ViewModel() {
     private val _userData = MutableStateFlow(UserData())
     val userData: StateFlow<UserData> = _userData
 
+    // Listener for FirebaseAuth state changes
+    private val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+        val user = firebaseAuth.currentUser
+        if (user != null) {
+            fetchUserData()  // Fetch data for the logged-in user
+        } else {
+            _userData.value = UserData()  // Clear data if user is logged out
+        }
+    }
+
+    init {
+        // Add the auth state listener when ViewModel is initialized
+        auth.addAuthStateListener(authStateListener)
+        fetchUserData() // Initial fetch if user is already logged in
+    }
+
     // Register user and save their data in Firestore
     fun registerUser(
         name: String,
@@ -39,7 +53,7 @@ class UserViewModel : ViewModel() {
                         "name" to name,
                         "phone_number" to phoneNumber,
                         "email" to email,
-                        "profile_picture_url" to ""  // Tambahkan URL foto profil jika ada
+                        "profile_picture_url" to ""  // Add profile picture URL if available
                     )
 
                     firestore.collection("users").document(userId).set(userData)
@@ -62,16 +76,20 @@ class UserViewModel : ViewModel() {
             val userId = currentUser.uid
             firestore.collection("users").document(userId).get()
                 .addOnSuccessListener { document ->
-                    if (document != null) {
+                    if (document != null && document.exists()) {
                         val name = document.getString("name") ?: ""
                         val phoneNumber = document.getString("phone_number") ?: ""
                         val email = document.getString("email") ?: ""
                         val profilePictureUrl = document.getString("profile_picture_url") ?: ""
+
+                        // Update StateFlow with the data from Firestore
                         _userData.value = UserData(name, phoneNumber, email, profilePictureUrl)
+                    } else {
+                        println("Document does not exist for userId: $userId")
                     }
                 }
                 .addOnFailureListener { exception ->
-                    // Handle error (e.g., log it or show an error message)
+                    println("Error fetching data: ${exception.message}")
                 }
         }
     }
@@ -109,11 +127,10 @@ class UserViewModel : ViewModel() {
     // Log out the user and clear user data
     fun logOut() {
         auth.signOut()
-        _userData.value = UserData()  // Clear local user data
     }
 
-    // Call fetchUserData when initializing the ViewModel
-    init {
-        fetchUserData()
+    override fun onCleared() {
+        super.onCleared()
+        auth.removeAuthStateListener(authStateListener)  // Clean up the auth state listener
     }
 }

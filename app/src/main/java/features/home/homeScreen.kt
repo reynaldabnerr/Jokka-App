@@ -1,6 +1,7 @@
 package features.home
 
-import user.UserViewModel
+
+import UserViewModel
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInVertically
