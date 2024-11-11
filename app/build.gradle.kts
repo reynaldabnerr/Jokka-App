@@ -68,6 +68,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx:23.1.0") // Firebase Authentication
     implementation("com.google.android.gms:play-services-auth:21.2.0") // Google Sign-In
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation(libs.firebase.firestore.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

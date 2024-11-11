@@ -1,5 +1,7 @@
 package com.example.jokka_app
 
+
+import UserViewModel
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -13,7 +15,6 @@ import features.event.EventScreen
 import features.food.FoodScreen
 import features.home.HomeScreen
 import features.profile.ProfileScreen
-import user.UserViewModel
 
 @Composable
 fun NavGraph(navController: NavHostController, userViewModel: UserViewModel = viewModel()) {

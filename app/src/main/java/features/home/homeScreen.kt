@@ -1,5 +1,6 @@
 package features.home
 
+import UserViewModel
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInVertically
@@ -46,7 +47,7 @@ import common.cardHome.PlaceHomeCard
 import common.cardHome.PopularSection
 import common.carousel.Carousel
 import kotlinx.coroutines.delay
-import user.UserViewModel
+
 
 @Composable
 fun HomeScreen(

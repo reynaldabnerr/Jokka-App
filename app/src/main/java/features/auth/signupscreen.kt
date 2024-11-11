@@ -2,6 +2,8 @@
 
 package features.auth
 
+
+import UserViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -34,7 +36,6 @@ import com.example.jokka_app.R
 import com.example.jokka_app.Screen
 import common.button.Button
 import common.textfield.TextField
-import user.UserViewModel
 
 @Composable
 fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
@@ -51,6 +52,9 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
     var showSnackbar by remember { mutableStateOf(false) }
     var snackbarMessage by remember { mutableStateOf("") }
     val snackbarHostState = remember { SnackbarHostState() }
+
+    // State to show success message
+    var showSuccessSnackbar by remember { mutableStateOf(false) }
 
     val gradientColors = listOf(
         Color(0xFFFCE4EC),  // Light pink
@@ -72,18 +76,6 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
                 .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Status bar
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Row {
-                    // Add status bar icons here
-                }
-            }
-
             Spacer(modifier = Modifier.height(16.dp))
 
             Image(
@@ -203,8 +195,21 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
                             showSnackbar = true
                         }
                         else -> {
-                            userViewModel.updateUserData(name, phonenumber, email)
-                            navController.navigate(Screen.Home.route)
+                            userViewModel.registerUser(
+                                name = name,
+                                phoneNumber = phonenumber,
+                                email = email,
+                                password = password,
+                                onSuccess = {
+                                    snackbarMessage = "Account successfully created"
+                                    showSnackbar = true
+                                    showSuccessSnackbar = true // Tampilkan pesan sukses
+                                },
+                                onError = { error ->
+                                    snackbarMessage = error
+                                    showSnackbar = true
+                                }
+                            )
                         }
                     }
                 },
@@ -218,12 +223,18 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
 
         // Snackbar
         if (showSnackbar) {
-            LaunchedEffect(snackbarHostState) {
+            LaunchedEffect(snackbarHostState, showSuccessSnackbar) {
                 snackbarHostState.showSnackbar(
                     message = snackbarMessage,
                     duration = SnackbarDuration.Short
                 )
                 showSnackbar = false
+
+                // Navigate to Home if signup is successful
+                if (showSuccessSnackbar) {
+                    showSuccessSnackbar = false
+                    navController.navigate(Screen.Home.route)
+                }
             }
         }
 
@@ -235,15 +246,14 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
         ) { data ->
             Snackbar(
                 modifier = Modifier.padding(horizontal = 16.dp),
-                containerColor = MaterialTheme.colorScheme.errorContainer,
-                contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
             ) {
                 Text(data.visuals.message)
             }
         }
     }
 }
-
 @Composable
 fun ClickableFooter(navController: NavController) {
     val annotatedText = buildAnnotatedString {
@@ -262,6 +272,7 @@ fun ClickableFooter(navController: NavController) {
                 .firstOrNull()?.let {
                     navController.navigate("sign_in")
                 }
-        }
+        },
+        modifier = Modifier.padding(top = 16.dp)
     )
 }

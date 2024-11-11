@@ -1,5 +1,6 @@
 package features.profile
 
+import UserViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -30,14 +31,14 @@ import common.appbar.AppBar
 import common.appbar.BottomBar
 import common.button.Button
 import common.button.OutlinedButton
-import user.UserViewModel
+
 
 @Composable
 fun ProfileScreen(navController: NavController, userViewModel: UserViewModel) {
-    val userData = userViewModel.userData.collectAsState()
-    val name = userData.value.name.ifEmpty { "Unknown User" }
-    val phoneNumber = userData.value.phoneNumber.ifEmpty { "No Phone Number" }
-    val email = userData.value.email.ifEmpty { "No Email" }
+    val userData by userViewModel.userData.collectAsState()
+    val name = userData.name.ifEmpty { "Unknown User" }
+    val phoneNumber = userData.phoneNumber.ifEmpty { "No Phone Number" }
+    val email = userData.email.ifEmpty { "No Email" }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -137,6 +138,7 @@ fun ProfileScreen(navController: NavController, userViewModel: UserViewModel) {
                 OutlinedButton(
                     text = "Log Out",
                     onClick = {
+                        userViewModel.logOut()  // Call logOut() to sign out
                         navController.navigate("sign_in") {
                             popUpTo(navController.graph.startDestinationId) { inclusive = true }
                         }
