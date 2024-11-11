@@ -8,14 +8,11 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,14 +28,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.jokka_app.R
+import com.example.jokka_app.Screen
 import common.appbar.AppBar
 import common.appbar.BottomBar
-import common.cardHome.CategoryChip
 import common.cardHome.EventHome
 import common.cardHome.EventHomeCard
 import common.cardHome.Food
@@ -96,7 +92,6 @@ fun HomeScreen(
             "Music Concert"
         )
     )
-
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -166,31 +161,14 @@ fun HomeScreen(
                 )
             }
 
-            // Categories Section
-            item {
-                Text(
-                    text = "Categories",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Monospace,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 12.dp)
-                )
-
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    contentPadding = PaddingValues(horizontal = 4.dp)
-                ) {
-                    items(places) { place ->
-                        CategoryChip(place = place)
-                    }
-                }
-            }
-
             // Popular Places Section
             item {
                 PopularSection(
                     title = "Popular Places \uD83C\uDFDB\uFE0F \uD83D\uDDFA\uFE0F",
                     items = places,
+                    onClickSeeAll = {
+                        navController.navigate(Screen.Destination.route) // Deklarasikan navigasi di HomeScreen
+                    }, // Pass navController to PopularSection
                     itemContent = { place ->
                         PlaceHomeCard(
                             place = place,
@@ -206,6 +184,9 @@ fun HomeScreen(
                 PopularSection(
                     title = "Popular Foods \uD83C\uDF5C",
                     items = foods,
+                    onClickSeeAll = {
+                        navController.navigate(Screen.Food.route) // Deklarasikan navigasi di HomeScreen
+                    },// Pass navController to PopularSection
                     itemContent = { food ->
                         FoodCard(food = food)
                     }
@@ -214,24 +195,18 @@ fun HomeScreen(
 
             // Events Section
             item {
-                Text(
-                    text = "What's Happening in Makassar?",
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.Monospace,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 12.dp)
-                )
                 PopularSection(
                     title = "Events in Makassar",
-                    items = events, // Use the events list here
+                    items = events,
+                    onClickSeeAll = {
+                        navController.navigate(Screen.Event.route) // Deklarasikan navigasi di HomeScreen
+                    }, // Pass navController to PopularSection
                     itemContent = { event ->
-                        EventHomeCard(event = event, modifier = Modifier.fillMaxWidth()) // Display each event using EventHomeCard
+                        EventHomeCard(event = event, modifier = Modifier.fillMaxWidth())
                     }
                 )
             }
         }
-
-
 
         BottomBar(
             currentScreen = currentRoute ?: "",

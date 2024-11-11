@@ -42,6 +42,7 @@ import kotlinx.coroutines.delay
 fun <T> PopularSection(
     title: String,
     items: List<T>,
+    onClickSeeAll: () -> Unit, // Tambahkan parameter onClickSeeAll
     itemContent: @Composable (T) -> Unit
 ) {
     Card(
@@ -79,13 +80,13 @@ fun <T> PopularSection(
                 )
 
                 IconButton(
-                    onClick = { /* Handle see all */ },
+                    onClick = onClickSeeAll, // Panggil onClickSeeAll saat tombol diklik
                     modifier = Modifier
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Rounded.ArrowForward,
                         contentDescription = "See all",
-                        tint = Color.DarkGray // Change the tint if needed
+                        tint = Color.DarkGray
                     )
                 }
             }
@@ -114,8 +115,8 @@ fun <T> PopularSection(
                                 scaleY = animatedProgress.value,
                                 alpha = animatedProgress.value
                             )
-                            .shadow(8.dp, shape = RoundedCornerShape(16.dp)) // Add shadow here
-                            .background(MaterialTheme.colorScheme.surface)   // Background to enhance shadow visibility
+                            .shadow(8.dp, shape = RoundedCornerShape(16.dp))
+                            .background(MaterialTheme.colorScheme.surface)
                     ) {
                         itemContent(item)
                     }
