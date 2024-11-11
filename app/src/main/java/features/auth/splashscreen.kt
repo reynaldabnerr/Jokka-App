@@ -11,25 +11,33 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.jokka_app.R
 import com.example.jokka_app.Screen
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(navController: NavController) {
+    val auth = FirebaseAuth.getInstance()
+
     LaunchedEffect(true) {
-        delay(3000) // Delay for 3 seconds
-        navController.navigate(Screen.SignIn.route) {
-            popUpTo(Screen.Splash.route) {
-                inclusive = true
+        delay(3000) // Splash screen delay for 3 seconds
+        if (auth.currentUser != null) {
+            // If the user is already logged in, navigate to HomeScreen
+            navController.navigate(Screen.Home.route) {
+                popUpTo(Screen.Splash.route) { inclusive = true }
+            }
+        } else {
+            // If the user is not logged in, navigate to SignInScreen
+            navController.navigate(Screen.SignIn.route) {
+                popUpTo(Screen.Splash.route) { inclusive = true }
             }
         }
     }
 
+    // UI for the splash screen (logo or other visuals)
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -40,13 +48,7 @@ fun SplashScreen(navController: NavController) {
         Image(
             painter = image,
             contentDescription = "App Logo",
-            modifier = Modifier.size(200.dp) // Adjust the size here
+            modifier = Modifier.size(200.dp)
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SplashScreenPreview() {
-    SplashScreen(navController = rememberNavController())
 }

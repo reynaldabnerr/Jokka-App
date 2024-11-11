@@ -18,7 +18,10 @@ import features.home.HomeScreen
 import features.profile.ProfileScreen
 
 @Composable
-fun NavGraph(navController: NavHostController, userViewModel: UserViewModel = viewModel()) {
+fun NavGraph(
+    navController: NavHostController,
+    userViewModel: UserViewModel = viewModel()
+) {
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
         composable(Screen.Splash.route) {
             SplashScreen(navController = navController)
@@ -44,9 +47,9 @@ fun NavGraph(navController: NavHostController, userViewModel: UserViewModel = vi
         composable(Screen.Profile.route) {
             ProfileScreen(navController = navController, userViewModel = userViewModel)
         }
-
     }
 }
+
 
 // Define the screens in your app
 sealed class Screen(val route: String) {
