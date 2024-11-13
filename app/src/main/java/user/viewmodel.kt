@@ -1,3 +1,5 @@
+package user
+
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -15,6 +17,8 @@ class UserViewModel : ViewModel() {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
 
     // StateFlow to hold user data
     private val _userData = MutableStateFlow(UserData())
@@ -104,6 +108,7 @@ class UserViewModel : ViewModel() {
     ) {
         val currentUser = auth.currentUser
         if (currentUser != null) {
+            _isLoading.value = true // Start loading
             val userId = currentUser.uid
             val updatedData = mapOf(
                 "name" to name,
@@ -114,9 +119,11 @@ class UserViewModel : ViewModel() {
             firestore.collection("users").document(userId).update(updatedData)
                 .addOnSuccessListener {
                     _userData.value = UserData(name, phoneNumber, currentUser.email ?: "", profilePictureUrl)
+                    _isLoading.value = false // Stop loading
                     onSuccess()
                 }
                 .addOnFailureListener { e ->
+                    _isLoading.value = false // Stop loading
                     onError(e.message ?: "Failed to update user data.")
                 }
         } else {

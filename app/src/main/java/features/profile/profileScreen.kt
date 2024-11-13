@@ -1,16 +1,28 @@
 package features.profile
 
-import UserViewModel
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -21,18 +33,20 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.example.jokka_app.R
 import common.appbar.AppBar
 import common.appbar.BottomBar
 import common.button.Button
 import common.button.OutlinedButton
-
+import user.UserViewModel
 
 @Composable
 fun ProfileScreen(navController: NavController, userViewModel: UserViewModel) {
@@ -40,6 +54,7 @@ fun ProfileScreen(navController: NavController, userViewModel: UserViewModel) {
     val name = userData.name.ifEmpty { "Unknown User" }
     val phoneNumber = userData.phoneNumber.ifEmpty { "No Phone Number" }
     val email = userData.email.ifEmpty { "No Email" }
+    val profilePictureUrl = userData.profilePictureUrl.ifEmpty { "" }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -66,7 +81,7 @@ fun ProfileScreen(navController: NavController, userViewModel: UserViewModel) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .background(Color(0xFFF5F5F5))
+                .background(Color(0xFFFFFDFD))
         ) {
             Column(
                 modifier = Modifier
@@ -88,8 +103,16 @@ fun ProfileScreen(navController: NavController, userViewModel: UserViewModel) {
                             .padding(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
+                        // Load profile picture from URL
                         Image(
-                            painter = painterResource(id = R.drawable.logo_jokka_app),
+                            painter = rememberAsyncImagePainter(
+                                ImageRequest.Builder(LocalContext.current)
+                                    .data(data = profilePictureUrl.ifEmpty { R.drawable.logo_jokka_app })
+                                    .apply(block = fun ImageRequest.Builder.() {
+                                        placeholder(R.drawable.logo_jokka_app)
+                                        error(R.drawable.logo_jokka_app)
+                                    }).build()
+                            ),
                             contentDescription = "Profile Picture",
                             modifier = Modifier
                                 .size(120.dp)

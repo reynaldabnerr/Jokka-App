@@ -2,7 +2,7 @@ package com.example.jokka_app
 
 
 
-import UserViewModel
+import user.UserViewModel
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -15,6 +15,7 @@ import features.destination.DestinationScreen
 import features.event.EventScreen
 import features.food.FoodScreen
 import features.home.HomeScreen
+import features.profile.EditProfileScreen
 import features.profile.ProfileScreen
 
 @Composable
@@ -47,6 +48,9 @@ fun NavGraph(
         composable(Screen.Profile.route) {
             ProfileScreen(navController = navController, userViewModel = userViewModel)
         }
+        composable(Screen.EditProfile.route) {
+            EditProfileScreen(navController = navController, userViewModel = userViewModel)
+        }
     }
 }
 
@@ -61,4 +65,5 @@ sealed class Screen(val route: String) {
     data object Destination : Screen("destination")
     data object Food : Screen("food")
     data object Profile : Screen("profile")
+    data object EditProfile : Screen("edit_profile")
 }
