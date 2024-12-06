@@ -37,7 +37,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import common.appbar.AppBar
-import user.UserViewModel
+import data.UserViewModel
 
 @Composable
 fun EditProfileScreen(navController: NavController, userViewModel: UserViewModel) {

@@ -25,7 +25,7 @@ fun SplashScreen(navController: NavController) {
     LaunchedEffect(true) {
         delay(3000) // Splash screen delay for 3 seconds
         if (auth.currentUser != null) {
-            // If the user is already logged in, navigate to HomeScreen
+            // If the user is already logged in, navigate to features.home.HomeScreen
             navController.navigate(Screen.Home.route) {
                 popUpTo(Screen.Splash.route) { inclusive = true }
             }

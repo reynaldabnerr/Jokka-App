@@ -2,7 +2,16 @@ package common.cardHome
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
@@ -18,22 +27,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
+import data.Event
 
-data class EventHome(
-    val image: Int,
-    val name: Int,
-    val date: String,
-    val location: String,
-    val eventname: String
-)
 
 @Composable
 fun EventHomeCard(
-    event: EventHome,
+    event: Event,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -41,6 +43,9 @@ fun EventHomeCard(
             .width(280.dp)
             .clickable { /* Handle click */ },
         shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White // Warna latar belakang kartu
+        ),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
@@ -51,8 +56,8 @@ fun EventHomeCard(
                     .fillMaxWidth()
             ) {
                 Image(
-                    painter = painterResource(id = event.image),
-                    contentDescription = stringResource(id = event.name),
+                    painter = rememberAsyncImagePainter(model = event.eventimage),
+                    contentDescription = event.eventname,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop
                 )
@@ -65,7 +70,7 @@ fun EventHomeCard(
                     color = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f)
                 ) {
                     Text(
-                        text = event.eventname,
+                        text = event.eventcategories,
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
                         style = MaterialTheme.typography.labelMedium,
                         color = Color.White
@@ -81,7 +86,8 @@ fun EventHomeCard(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = stringResource(id = event.name),
+                    text = event.eventname,
+                    maxLines = 1,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -98,7 +104,7 @@ fun EventHomeCard(
                         tint = MaterialTheme.colorScheme.primary
                     )
                     Text(
-                        text = event.date,
+                        text = event.eventdate,
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.Gray
                     )
@@ -116,7 +122,7 @@ fun EventHomeCard(
                         tint = MaterialTheme.colorScheme.primary
                     )
                     Text(
-                        text = event.location,
+                        text = event.eventlocation,
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.Gray
                     )

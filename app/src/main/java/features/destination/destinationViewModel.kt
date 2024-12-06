@@ -33,35 +33,35 @@ class DestinationViewModel(application: Application) : AndroidViewModel(applicat
         val destinationList = listOf(
             Destination(
                 id = 1,
-                imageResId = R.drawable.place1,
+                imageResId = R.drawable.destination1,
                 nameResId = R.string.destination1,
                 categoryResId = R.string.category1,
                 descriptionResId = R.string.destination_description1  // Tambahkan deskripsi
             ),
             Destination(
                 id = 2,
-                imageResId = R.drawable.place2,
+                imageResId = R.drawable.destination2,
                 nameResId = R.string.destination2,
                 categoryResId = R.string.category2,
                 descriptionResId = R.string.destination_description2  // Tambahkan deskripsi
             ),
             Destination(
                 id = 3,
-                imageResId = R.drawable.place3,
+                imageResId = R.drawable.destination3,
                 nameResId = R.string.destination3,
                 categoryResId = R.string.category3,
                 descriptionResId = R.string.destination_description3  // Tambahkan deskripsi
             ),
             Destination(
                 id = 4,
-                imageResId = R.drawable.place4,
+                imageResId = R.drawable.destination4,
                 nameResId = R.string.destination4,
                 categoryResId = R.string.category4,
                 descriptionResId = R.string.destination_description4  // Tambahkan deskripsi
             ),
             Destination(
                 id = 5,
-                imageResId = R.drawable.place5,
+                imageResId = R.drawable.destination5,
                 nameResId = R.string.destination5,
                 categoryResId = R.string.category5,
                 descriptionResId = R.string.destination_description5  // Tambahkan deskripsi

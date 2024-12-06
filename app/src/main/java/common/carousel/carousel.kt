@@ -19,24 +19,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import common.cardHome.Place
+import coil.compose.rememberAsyncImagePainter
+import data.Destination
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun Carousel(places: List<Place>) {
+fun Carousel(destinations: List<Destination>) {
     val carouselState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     var currentIndex by remember { mutableIntStateOf(0) }
 
-    // LaunchedEffect to auto-scroll every 2 seconds
+    // Auto-scroll every 2 seconds
     LaunchedEffect(carouselState) {
         while (true) {
-            delay(2000) // Autonext every 2 seconds
-            currentIndex = (currentIndex + 1) % places.size
+            delay(2000) // Auto-scroll every 2 seconds
+            currentIndex = (currentIndex + 1) % destinations.size
             coroutineScope.launch {
                 carouselState.animateScrollToItem(currentIndex)
             }
@@ -47,19 +46,19 @@ fun Carousel(places: List<Place>) {
         state = carouselState,
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(16 / 9f) // Set aspect ratio 16:9 for the whole carousel
-            .clip(RoundedCornerShape(16.dp)), // Rounded corners
+            .aspectRatio(16 / 9f)
+            .clip(RoundedCornerShape(16.dp)),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(horizontal = 8.dp)
     ) {
-        items(places) { place ->
+        items(destinations) { destination ->
             Image(
-                painter = painterResource(id = place.imageResourceId),
-                contentDescription = LocalContext.current.getString(place.stringResourceId),
+                painter = rememberAsyncImagePainter(model = destination.destinationimage),
+                contentDescription = destination.destinationname,
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(16 / 9f)
-                    .clip(RoundedCornerShape(16.dp)), // Rounded corners on image
+                    .clip(RoundedCornerShape(16.dp)),
                 contentScale = ContentScale.Crop
             )
         }

@@ -2,22 +2,23 @@ package com.example.jokka_app
 
 
 
-import user.UserViewModel
+import FoodScreen
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import data.MainViewModel
 import features.auth.CompleteProfileScreen
 import features.auth.SignInScreen
 import features.auth.SignUpScreen
 import features.auth.SplashScreen
 import features.destination.DestinationScreen
 import features.event.EventScreen
-import features.food.FoodScreen
 import features.home.HomeScreen
 import features.profile.EditProfileScreen
 import features.profile.ProfileScreen
+import data.UserViewModel
 
 @Composable
 fun NavGraph(
@@ -35,7 +36,7 @@ fun NavGraph(
             SignUpScreen(navController = navController, userViewModel = userViewModel)
         }
         composable(Screen.Home.route) {
-            HomeScreen(navController = navController, userViewModel = userViewModel)
+            HomeScreen(navController = navController, userViewModel = userViewModel, mainViewModel = MainViewModel())
         }
         composable(Screen.Event.route) {
             EventScreen(navController = navController)
@@ -44,7 +45,7 @@ fun NavGraph(
             DestinationScreen(navController = navController)
         }
         composable(Screen.Food.route) {
-            FoodScreen(navController = navController)
+            FoodScreen(navController = navController, mainViewModel = MainViewModel())
         }
         composable(Screen.Profile.route) {
             ProfileScreen(navController = navController, userViewModel = userViewModel)

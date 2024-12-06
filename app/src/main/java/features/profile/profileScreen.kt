@@ -29,7 +29,7 @@ import coil.request.ImageRequest
 import com.example.jokka_app.R
 import common.appbar.AppBar
 import common.appbar.BottomBar
-import user.UserViewModel
+import data.UserViewModel
 
 @Composable
 fun ProfileScreen(navController: NavController, userViewModel: UserViewModel) {
