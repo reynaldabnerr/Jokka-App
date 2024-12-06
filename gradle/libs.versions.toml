@@ -2,6 +2,7 @@
 agp = "8.5.2"
 coilCompose = "2.5.0"
 datastorePreferences = "1.1.1"
+datastorePreferencesVersion = "1.1.1"
 firebaseAuthKtx = "23.1.0"
 kotlin = "1.9.0"
 coreKtx = "1.15.0"
@@ -29,6 +30,7 @@ ui = "<latest-version>"
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+androidx-datastore-preferences-v100 = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferencesVersion" }
 androidx-material3-vlatestversion = { module = "androidx.compose.material3:material3", version.ref = "material3Version" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
