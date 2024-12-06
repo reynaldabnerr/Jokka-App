@@ -2,6 +2,7 @@
 
 package features.auth
 
+import CustomButton
 import android.app.Activity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -28,13 +29,14 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.jokka_app.R
-import common.button.Button
-import common.button.OutlinedButton
-import common.textfield.TextField
+import com.example.jokka_app.R.drawable.google_icon
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
+import common.textfield.TextField
+
 
 @Composable
 fun SignInScreen(navController: NavController) {
@@ -60,134 +62,162 @@ fun SignInScreen(navController: NavController) {
     )
 
     // Google Sign-In launcher
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) { result ->
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
         if (task.isSuccessful) {
             val account = task.result
             account?.let {
-                firebaseAuthWithGoogle(it.idToken, auth, navController) // Authenticate with Firebase
+                firebaseAuthWithGoogle(it.idToken, auth, navController)
             }
-        } else {
-            snackbarMessage = "Google sign-in failed."
-            showSnackbar = true
         }
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(colors = listOf(Color(0xFFFCE4EC), Color(0xFFF3E5F5), Color(0xFFE8EAF6)))
-            )
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                .verticalScroll(scrollState),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.height(32.dp))
-
-            Image(
-                painter = painterResource(id = R.drawable.signin_widget),
-                contentDescription = "User sitting with laptop",
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        content = { padding ->
+            Box(
                 modifier = Modifier
-                    .size(200.dp)
-                    .clip(RoundedCornerShape(16.dp))
-            )
-
-            Spacer(modifier = Modifier.height(48.dp))
-
-            Text("Hello Jokkers!", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.W400)
-            Text("Please, Log In.", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.height(24.dp))
-
-            TextField(
-                value = email,
-                onValueChange = { email = it },
-                placeholderText = "Your email",
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            TextField(
-                value = password,
-                onValueChange = { password = it },
-                placeholderText = "Password",
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
-                visualTransformation = PasswordVisualTransformation()
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Email/Password Sign-In button
-            Button(
-                text = "Sign In",
-                onClick = {
-                    if (email.isEmpty() || password.isEmpty()) {
-                        snackbarMessage = "Please fill in email and password"
-                        showSnackbar = true
-                    } else {
-                        firebaseAuthWithEmailPassword(email, password, auth, navController) {
-                            snackbarMessage = it // Show error if any
-                            showSnackbar = true
-                        }
-                    }
-                }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+                    .fillMaxSize()
+                    .padding(padding)
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(Color(0xFFFCE4EC), Color(0xFFF3E5F5), Color(0xFFE8EAF6))
+                        )
+                    )
             ) {
-                Divider(modifier = Modifier.weight(1f).align(Alignment.CenterVertically), color = Color.Gray)
-                Text("or", modifier = Modifier.padding(horizontal = 16.dp), color = Color.Gray)
-                Divider(modifier = Modifier.weight(1f).align(Alignment.CenterVertically), color = Color.Gray)
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                        .verticalScroll(scrollState),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    Image(
+                        painter = painterResource(id = R.drawable.signin_widget),
+                        contentDescription = "User sitting with laptop",
+                        modifier = Modifier
+                            .size(200.dp)
+                            .clip(RoundedCornerShape(16.dp))
+                    )
+
+                    Spacer(modifier = Modifier.height(48.dp))
+
+                    Text("Hello Jokkers!", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.W400)
+                    Text("Please, Log In.", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    TextField(
+                        value = email,
+                        onValueChange = { email = it },
+                        placeholderText = "Your email",
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next)
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    TextField(
+                        value = password,
+                        onValueChange = { password = it },
+                        placeholderText = "Password",
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+                        visualTransformation = PasswordVisualTransformation()
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // Forgot Password
+                    TextButton(
+                        onClick = {
+                            if (email.isNotEmpty()) {
+                                sendPasswordResetEmail(auth, email) { message ->
+                                    snackbarMessage = message
+                                    showSnackbar = true
+                                }
+                            } else {
+                                snackbarMessage = "Please enter your email to reset password."
+                                showSnackbar = true
+                            }
+                        },
+                        modifier = Modifier.align(Alignment.End)
+                    ) {
+                        Text(
+                            text = "Forgot Password?",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Email/Password Sign-In button
+                    CustomButton(
+                        text = "Sign In",
+                        buttonColor = Color.Red, // Blue color for sign in
+                        textColor = Color.White,
+                        onClick = {
+                            if (email.isEmpty() || password.isEmpty()) {
+                                snackbarMessage = "Please fill in email and password"
+                                showSnackbar = true
+                            } else {
+                                firebaseAuthWithEmailPassword(email, password, auth, navController) {
+                                    snackbarMessage = it // Show error if any
+                                    showSnackbar = true
+                                }
+                            }
+                        }
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Divider(modifier = Modifier.weight(1f), color = Color.Gray)
+                        Text("or", modifier = Modifier.padding(horizontal = 16.dp), color = Color.Gray)
+                        Divider(modifier = Modifier.weight(1f), color = Color.Gray)
+                    }
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    // Google Sign-In button
+                    CustomButton(
+                        text = "Sign in with Google",
+                        iconResId = google_icon,
+                        buttonColor = Color.White,
+                        textColor = Color.Black,
+                        onClick = { launcher.launch(googleSignInClient.signInIntent) }
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    // Sign Up button
+                    CustomButton(
+                        text = "Sign Up",
+                        buttonColor = Color.Gray, // Green color for sign up
+                        textColor = Color.White,
+                        onClick = { navController.navigate("sign_up") }
+                    )
+                }
             }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Google Sign-In button
-            Button(
-                text = "Sign in with Google",
-                onClick = { launcher.launch(googleSignInClient.signInIntent) }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            OutlinedButton(
-                text = "Sign Up",
-                onClick = { navController.navigate("sign_up") }
-            )
         }
+    )
+}
 
-        if (showSnackbar) {
-            LaunchedEffect(snackbarHostState) {
-                snackbarHostState.showSnackbar(
-                    message = snackbarMessage,
-                    duration = SnackbarDuration.Short
-                )
-                showSnackbar = false
+// Firebase function to send password reset email
+private fun sendPasswordResetEmail(auth: FirebaseAuth, email: String, callback: (String) -> Unit) {
+    auth.sendPasswordResetEmail(email)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                callback("Reset password email sent to $email")
+            } else {
+                callback(task.exception?.message ?: "Failed to send reset password email")
             }
         }
-
-        SnackbarHost(
-            hostState = snackbarHostState,
-            modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 16.dp)
-        ) { data ->
-            Snackbar(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                containerColor = MaterialTheme.colorScheme.errorContainer,
-                contentColor = MaterialTheme.colorScheme.onErrorContainer,
-            ) { Text(data.visuals.message) }
-        }
-    }
 }
 
 // Firebase authentication with Google
@@ -196,11 +226,46 @@ private fun firebaseAuthWithGoogle(idToken: String?, auth: FirebaseAuth, navCont
     auth.signInWithCredential(credential)
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                navController.navigate("home") {
-                    popUpTo("sign_in") { inclusive = true }
+                val userId = auth.currentUser?.uid ?: ""
+                val email = auth.currentUser?.email ?: ""
+
+                val database = FirebaseFirestore.getInstance()
+                val userDoc = database.collection("users").document(userId)
+
+                userDoc.get().addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        val name = document.getString("name").orEmpty()
+                        val phoneNumber = document.getString("phone_number").orEmpty()
+                        val profilePictureUrl = document.getString("profile_picture_url").orEmpty()
+
+                        if (name.isNotEmpty() && phoneNumber.isNotEmpty() && profilePictureUrl.isNotEmpty()) {
+                            navController.navigate("home") {
+                                popUpTo("sign_in") { inclusive = true }
+                            }
+                        } else {
+                            navController.navigate("complete_profile") {
+                                popUpTo("sign_in") { inclusive = true }
+                            }
+                        }
+                    } else {
+                        val defaultData = mapOf(
+                            "name" to "",
+                            "phone_number" to "",
+                            "profile_picture_url" to "",
+                            "email" to email,
+                            "role" to "user"
+                        )
+                        userDoc.set(defaultData).addOnSuccessListener {
+                            navController.navigate("complete_profile") {
+                                popUpTo("sign_in") { inclusive = true }
+                            }
+                        }
+                    }
+                }.addOnFailureListener {
+                    navController.navigate("sign_in") {
+                        popUpTo("sign_in") { inclusive = true }
+                    }
                 }
-            } else {
-                // Log an error or display a snackbar on failure
             }
         }
 }

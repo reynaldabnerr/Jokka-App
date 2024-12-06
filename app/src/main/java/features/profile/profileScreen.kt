@@ -1,31 +1,16 @@
 package features.profile
 
+import CustomButton
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,8 +29,6 @@ import coil.request.ImageRequest
 import com.example.jokka_app.R
 import common.appbar.AppBar
 import common.appbar.BottomBar
-import common.button.Button
-import common.button.OutlinedButton
 import user.UserViewModel
 
 @Composable
@@ -58,6 +41,10 @@ fun ProfileScreen(navController: NavController, userViewModel: UserViewModel) {
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+
+    // State management for popups
+    var showLogoutDialog by remember { mutableStateOf(false) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -151,26 +138,91 @@ fun ProfileScreen(navController: NavController, userViewModel: UserViewModel) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Button(
+                CustomButton(
                     text = "Edit Profile",
+                    buttonColor = Color(0xFF4285F4), // Blue for edit profile
+                    textColor = Color.White,
                     onClick = { navController.navigate("edit_profile") },
                     modifier = Modifier.fillMaxWidth()
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                OutlinedButton(
+                CustomButton(
                     text = "Log Out",
-                    onClick = {
-                        userViewModel.logOut()  // Call logOut() to sign out
-                        navController.navigate("sign_in") {
-                            popUpTo(navController.graph.startDestinationId) { inclusive = true }
-                        }
-                    },
+                    buttonColor = Color(0xFFE53935), // Red for logout
+                    textColor = Color.White,
+                    onClick = { showLogoutDialog = true },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                CustomButton(
+                    text = "Delete Account",
+                    buttonColor = Color(0xFF8E24AA), // Purple for delete account
+                    textColor = Color.White,
+                    onClick = { showDeleteDialog = true },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
         }
+    }
+
+    // Logout confirmation dialog
+    if (showLogoutDialog) {
+        AlertDialog(
+            onDismissRequest = { showLogoutDialog = false },
+            title = { Text("Confirm Logout") },
+            text = { Text("Are you sure you want to log out?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    userViewModel.logOut()
+                    navController.navigate("sign_in") {
+                        popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                    }
+                    showLogoutDialog = false
+                }) {
+                    Text("Logout")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showLogoutDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+
+    // Delete account confirmation dialog
+    if (showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog = false },
+            title = { Text("Confirm Delete Account") },
+            text = { Text("Are you sure you want to delete your account? This action cannot be undone.") },
+            confirmButton = {
+                TextButton(onClick = {
+                    userViewModel.deleteAccount(
+                        onSuccess = {
+                            navController.navigate("sign_in") {
+                                popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                            }
+                            showDeleteDialog = false
+                        },
+                        onError = {
+                            showDeleteDialog = false
+                        }
+                    )
+                }) {
+                    Text("Delete")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
     }
 }
 

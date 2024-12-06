@@ -131,6 +131,33 @@ class UserViewModel : ViewModel() {
         }
     }
 
+    // Delete account and associated user data
+    fun deleteAccount(onSuccess: () -> Unit, onError: (String) -> Unit) {
+        val user = auth.currentUser
+        if (user != null) {
+            val userId = user.uid
+
+            // Delete Firestore user document
+            firestore.collection("users").document(userId).delete()
+                .addOnSuccessListener {
+                    // Delete Firebase Authentication account
+                    user.delete()
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                onSuccess()
+                            } else {
+                                onError(task.exception?.message ?: "Failed to delete account.")
+                            }
+                        }
+                }
+                .addOnFailureListener { e ->
+                    onError(e.message ?: "Failed to delete user data.")
+                }
+        } else {
+            onError("User is not logged in.")
+        }
+    }
+
     // Log out the user and clear user data
     fun logOut() {
         auth.signOut()

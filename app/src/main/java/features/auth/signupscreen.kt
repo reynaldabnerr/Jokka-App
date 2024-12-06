@@ -2,8 +2,7 @@
 
 package features.auth
 
-
-
+import CustomButton
 import user.UserViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -35,8 +34,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.jokka_app.R
 import com.example.jokka_app.Screen
-import common.button.Button
 import common.textfield.TextField
+
 
 @Composable
 fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
@@ -178,8 +177,10 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Button(
+            CustomButton(
                 text = "Sign Up",
+                buttonColor = if (isTermsAccepted) Color.Red else Color.Gray,
+                textColor = Color.White,
                 onClick = {
                     when {
                         !isTermsAccepted -> {
@@ -255,6 +256,7 @@ fun SignUpScreen(navController: NavController, userViewModel: UserViewModel) {
         }
     }
 }
+
 @Composable
 fun ClickableFooter(navController: NavController) {
     val annotatedText = buildAnnotatedString {

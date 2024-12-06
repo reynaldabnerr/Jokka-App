@@ -8,6 +8,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import features.auth.CompleteProfileScreen
 import features.auth.SignInScreen
 import features.auth.SignUpScreen
 import features.auth.SplashScreen
@@ -50,6 +51,9 @@ fun NavGraph(
         }
         composable(Screen.EditProfile.route) {
             EditProfileScreen(navController = navController, userViewModel = userViewModel)
+        }
+        composable("complete_profile") {
+            CompleteProfileScreen(navController = navController, userViewModel = userViewModel)
         }
     }
 }
