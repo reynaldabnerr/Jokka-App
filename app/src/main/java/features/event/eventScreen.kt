@@ -19,11 +19,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import common.appbar.AppBar
-import common.appbar.BottomBar
-import common.cardScreen.EventCard
-import common.filter.FilterSection
-import common.loadingeffect.EventCardSkeleton
+import component.appbar.AppBar
+import component.appbar.BottomBar
+import component.cardScreen.EventCard
+import component.filter.FilterSection
+import component.loadingeffect.EventCardSkeleton
 import data.Event
 import data.fetchEvents
 
@@ -110,7 +110,7 @@ fun EventScreen(
                             event = event,
                             isLoading = false,
                             onClick = {
-                                navController.navigate("event_details/${event.eventname}")
+                                navController.navigate("event_details/${event.eventid}")
                             }
                         )
                     }

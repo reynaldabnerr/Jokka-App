@@ -1,4 +1,4 @@
-package common.cardHome
+package component.cardHome
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -21,19 +23,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import data.Destination
+import data.Food
+import java.text.NumberFormat
 
 
 @Composable
-fun DestinationHomeCard(
-    destination: Destination,
-    modifier: Modifier = Modifier
-) {
+fun FoodHomeCard(food: Food, modifier: Modifier = Modifier) {
     Card(
         modifier = modifier
             .width(160.dp)
@@ -45,10 +44,10 @@ fun DestinationHomeCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
-            // Destination Image
+            // Food Image
             AsyncImage(
-                model = destination.destinationimage,
-                contentDescription = destination.destinationdescription,
+                model = food.foodimage,
+                contentDescription = food.foodname,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(120.dp)
@@ -56,7 +55,7 @@ fun DestinationHomeCard(
                 contentScale = ContentScale.Crop
             )
 
-            // Destination Details
+            // Food Details
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -64,7 +63,7 @@ fun DestinationHomeCard(
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = destination.destinationname,
+                    text = food.foodname,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     maxLines = 1,
@@ -77,22 +76,24 @@ fun DestinationHomeCard(
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
-                            painter = painterResource(id = android.R.drawable.star_big_on),
+                            imageVector = Icons.Filled.Star,
                             contentDescription = "Rating",
                             tint = Color.Yellow,
                             modifier = Modifier.size(16.dp)
                         )
                         Text(
-                            text = destination.destinationrating,
+                            text = food.foodrating,
                             style = MaterialTheme.typography.bodySmall,
                             modifier = Modifier.padding(start = 4.dp)
                         )
                     }
+                    val formattedPrice = NumberFormat.getNumberInstance(java.util.Locale("id", "ID"))
+                        .format(food.foodprice)
                     Text(
-                        text = destination.destinationcategory,
+                        text = "Rp $formattedPrice",
                         style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.W400,
-                        color = Color.Black
+                        color = Color.Black,
                     )
                 }
             }

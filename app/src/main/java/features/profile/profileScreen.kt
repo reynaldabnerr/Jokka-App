@@ -27,8 +27,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.jokka_app.R
-import common.appbar.AppBar
-import common.appbar.BottomBar
+import component.appbar.AppBar
+import component.appbar.BottomBar
 import data.UserViewModel
 
 @Composable

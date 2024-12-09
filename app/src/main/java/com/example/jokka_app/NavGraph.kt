@@ -19,11 +19,13 @@ import features.home.HomeScreen
 import features.profile.EditProfileScreen
 import features.profile.ProfileScreen
 import data.UserViewModel
+import features.event.DetailEventScreen
 
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    userViewModel: UserViewModel = viewModel()
+    userViewModel: UserViewModel = viewModel(),
+    mainViewModel: MainViewModel = viewModel() // Tambahkan MainViewModel
 ) {
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
         composable(Screen.Splash.route) {
@@ -36,7 +38,7 @@ fun NavGraph(
             SignUpScreen(navController = navController, userViewModel = userViewModel)
         }
         composable(Screen.Home.route) {
-            HomeScreen(navController = navController, userViewModel = userViewModel, mainViewModel = MainViewModel())
+            HomeScreen(navController = navController, userViewModel = userViewModel, mainViewModel = mainViewModel)
         }
         composable(Screen.Event.route) {
             EventScreen(navController = navController)
@@ -45,7 +47,7 @@ fun NavGraph(
             DestinationScreen(navController = navController)
         }
         composable(Screen.Food.route) {
-            FoodScreen(navController = navController, mainViewModel = MainViewModel())
+            FoodScreen(navController = navController, mainViewModel = mainViewModel)
         }
         composable(Screen.Profile.route) {
             ProfileScreen(navController = navController, userViewModel = userViewModel)
@@ -55,6 +57,18 @@ fun NavGraph(
         }
         composable("complete_profile") {
             CompleteProfileScreen(navController = navController, userViewModel = userViewModel)
+        }
+
+        // Tambahkan DetailEventScreen
+        composable("event_details/{eventId}") { backStackEntry ->
+            val eventId = backStackEntry.arguments?.getString("eventId")
+            if (eventId != null) {
+                DetailEventScreen(
+                    eventId = eventId,
+                    navController = navController,
+                    mainViewModel = mainViewModel
+                )
+            }
         }
     }
 }

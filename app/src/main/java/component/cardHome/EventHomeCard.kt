@@ -1,4 +1,4 @@
-package common.cardHome
+package component.cardHome
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import data.Event
 
@@ -36,12 +37,15 @@ import data.Event
 @Composable
 fun EventHomeCard(
     event: Event,
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
             .width(280.dp)
-            .clickable { /* Handle click */ },
+            .clickable {
+                navController.navigate("event_details/${event.eventid}")
+            },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White // Warna latar belakang kartu

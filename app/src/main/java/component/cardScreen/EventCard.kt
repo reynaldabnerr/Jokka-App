@@ -1,6 +1,6 @@
 // EventCard.kt
 
-package common.cardScreen
+package component.cardScreen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,7 +26,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import data.Event
-import java.text.NumberFormat
 
 @Composable
 fun EventCard(
@@ -100,19 +99,6 @@ fun EventCard(
                 Text(
                     text = if (isLoading) "" else event?.eventlocation ?: "",
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray,
-                    modifier = Modifier
-                        .background(if (isLoading) Color.LightGray else Color.Transparent)
-                        .padding(bottom = 8.dp)
-                )
-
-                // Harga Event
-                val formattedPrice = NumberFormat.getNumberInstance(java.util.Locale("id", "ID"))
-                    .format(event?.eventprice ?: 0)
-                Text(
-                    text = if (isLoading) "" else "Price: Rp $formattedPrice",
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.Medium,
                     color = Color.Gray,
                     modifier = Modifier
                         .background(if (isLoading) Color.LightGray else Color.Transparent)

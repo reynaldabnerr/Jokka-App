@@ -1,4 +1,4 @@
-package common.carousel
+package component.carousel
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

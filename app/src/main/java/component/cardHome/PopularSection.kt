@@ -1,4 +1,4 @@
-package common.cardHome
+package component.cardHome
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring

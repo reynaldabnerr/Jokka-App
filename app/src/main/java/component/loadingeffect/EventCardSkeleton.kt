@@ -1,4 +1,4 @@
-package common.loadingeffect
+package component.loadingeffect
 
 
 import androidx.compose.foundation.background

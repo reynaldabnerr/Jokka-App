@@ -1,4 +1,4 @@
-package common.cardScreen
+package component.cardScreen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
@@ -42,6 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import data.Food
+import java.text.NumberFormat
 
 @Composable
 fun FoodCard(
@@ -126,8 +127,10 @@ fun FoodCard(
                             modifier = Modifier.padding(start = 4.dp)
                         )
                     }
+                    val formattedPrice = NumberFormat.getNumberInstance(java.util.Locale("id", "ID"))
+                        .format(food.foodprice)
                     Text(
-                        text = "$${food.foodprice}",
+                        text = "Rp $formattedPrice",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         color = Color.White

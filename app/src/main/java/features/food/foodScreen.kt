@@ -12,9 +12,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.jokka_app.Screen
-import common.appbar.AppBar
-import common.appbar.BottomBar
-import common.cardScreen.FoodCard
+import component.appbar.AppBar
+import component.appbar.BottomBar
+import component.cardScreen.FoodCard
 import data.MainViewModel
 
 @Composable

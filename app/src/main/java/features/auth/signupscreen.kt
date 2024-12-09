@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.jokka_app.R
 import com.example.jokka_app.Screen
-import common.textfield.TextField
+import component.textfield.TextField
 
 
 @Composable

@@ -1,4 +1,4 @@
-package common.cardHome
+package component.cardHome
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -23,16 +21,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import data.Food
-import java.text.NumberFormat
+import data.Destination
 
 
 @Composable
-fun FoodHomeCard(food: Food, modifier: Modifier = Modifier) {
+fun DestinationHomeCard(
+    destination: Destination,
+    modifier: Modifier = Modifier
+) {
     Card(
         modifier = modifier
             .width(160.dp)
@@ -44,10 +45,10 @@ fun FoodHomeCard(food: Food, modifier: Modifier = Modifier) {
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
-            // Food Image
+            // Destination Image
             AsyncImage(
-                model = food.foodimage,
-                contentDescription = food.foodname,
+                model = destination.destinationimage,
+                contentDescription = destination.destinationdescription,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(120.dp)
@@ -55,7 +56,7 @@ fun FoodHomeCard(food: Food, modifier: Modifier = Modifier) {
                 contentScale = ContentScale.Crop
             )
 
-            // Food Details
+            // Destination Details
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -63,7 +64,7 @@ fun FoodHomeCard(food: Food, modifier: Modifier = Modifier) {
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = food.foodname,
+                    text = destination.destinationname,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     maxLines = 1,
@@ -76,24 +77,22 @@ fun FoodHomeCard(food: Food, modifier: Modifier = Modifier) {
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
-                            imageVector = Icons.Filled.Star,
+                            painter = painterResource(id = android.R.drawable.star_big_on),
                             contentDescription = "Rating",
                             tint = Color.Yellow,
                             modifier = Modifier.size(16.dp)
                         )
                         Text(
-                            text = food.foodrating,
+                            text = destination.destinationrating,
                             style = MaterialTheme.typography.bodySmall,
                             modifier = Modifier.padding(start = 4.dp)
                         )
                     }
-                    val formattedPrice = NumberFormat.getNumberInstance(java.util.Locale("id", "ID"))
-                        .format(food.foodprice)
                     Text(
-                        text = "Rp $formattedPrice",
+                        text = destination.destinationcategory,
                         style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.W400,
-                        color = Color.Black,
+                        color = Color.Black
                     )
                 }
             }

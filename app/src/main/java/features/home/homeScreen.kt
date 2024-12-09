@@ -32,13 +32,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.jokka_app.Screen
-import common.appbar.AppBar
-import common.appbar.BottomBar
-import common.cardHome.DestinationHomeCard
-import common.cardHome.EventHomeCard
-import common.cardHome.FoodHomeCard
-import common.cardHome.PopularSection
-import common.carousel.Carousel
+import component.appbar.AppBar
+import component.appbar.BottomBar
+import component.cardHome.DestinationHomeCard
+import component.cardHome.EventHomeCard
+import component.cardHome.FoodHomeCard
+import component.cardHome.PopularSection
+import component.carousel.Carousel
 import data.MainViewModel
 import kotlinx.coroutines.delay
 import data.UserViewModel
@@ -205,7 +205,8 @@ fun HomeScreen(
                     itemContent = { event ->
                         EventHomeCard(
                             event = event,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
+                            navController = navController
                         )
                     }
                 )

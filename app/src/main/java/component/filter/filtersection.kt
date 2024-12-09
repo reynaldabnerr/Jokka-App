@@ -1,4 +1,4 @@
-package common.filter
+package component.filter
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.horizontalScroll
