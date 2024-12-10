@@ -35,7 +35,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
-import common.textfield.TextField
+import component.textfield.TextField
 
 
 @Composable
@@ -45,9 +45,7 @@ fun SignInScreen(navController: NavController) {
     // State management
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var showSnackbar by remember { mutableStateOf(false) }
     var snackbarMessage by remember { mutableStateOf("") }
-
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
     val auth = FirebaseAuth.getInstance()
@@ -67,7 +65,9 @@ fun SignInScreen(navController: NavController) {
         if (task.isSuccessful) {
             val account = task.result
             account?.let {
-                firebaseAuthWithGoogle(it.idToken, auth, navController)
+                firebaseAuthWithGoogle(it.idToken, auth, navController) { message ->
+                    snackbarMessage = message // Update Snackbar message
+                }
             }
         }
     }
@@ -127,17 +127,14 @@ fun SignInScreen(navController: NavController) {
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    // Forgot Password
                     TextButton(
                         onClick = {
                             if (email.isNotEmpty()) {
                                 sendPasswordResetEmail(auth, email) { message ->
                                     snackbarMessage = message
-                                    showSnackbar = true
                                 }
                             } else {
                                 snackbarMessage = "Please enter your email to reset password."
-                                showSnackbar = true
                             }
                         },
                         modifier = Modifier.align(Alignment.End)
@@ -151,19 +148,16 @@ fun SignInScreen(navController: NavController) {
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Email/Password Sign-In button
                     CustomButton(
                         text = "Sign In",
-                        buttonColor = Color.Red, // Blue color for sign in
+                        buttonColor = Color.Red,
                         textColor = Color.White,
                         onClick = {
                             if (email.isEmpty() || password.isEmpty()) {
                                 snackbarMessage = "Please fill in email and password"
-                                showSnackbar = true
                             } else {
-                                firebaseAuthWithEmailPassword(email, password, auth, navController) {
-                                    snackbarMessage = it // Show error if any
-                                    showSnackbar = true
+                                firebaseAuthWithEmailPassword(email, password, auth, navController) { message ->
+                                    snackbarMessage = message
                                 }
                             }
                         }
@@ -184,7 +178,6 @@ fun SignInScreen(navController: NavController) {
 
                     Spacer(modifier = Modifier.height(4.dp))
 
-                    // Google Sign-In button
                     CustomButton(
                         text = "Sign in with Google",
                         iconResId = google_icon,
@@ -195,19 +188,25 @@ fun SignInScreen(navController: NavController) {
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // Sign Up button
                     CustomButton(
                         text = "Sign Up",
-                        buttonColor = Color.Gray, // Green color for sign up
+                        buttonColor = Color.Gray,
                         textColor = Color.White,
                         onClick = { navController.navigate("sign_up") }
                     )
+                }
+
+                // Display Snackbar if there's a message
+                LaunchedEffect(snackbarMessage) {
+                    if (snackbarMessage.isNotEmpty()) {
+                        snackbarHostState.showSnackbar(snackbarMessage)
+                        snackbarMessage = "" // Reset message after showing
+                    }
                 }
             }
         }
     )
 }
-
 // Firebase function to send password reset email
 private fun sendPasswordResetEmail(auth: FirebaseAuth, email: String, callback: (String) -> Unit) {
     auth.sendPasswordResetEmail(email)
@@ -221,7 +220,12 @@ private fun sendPasswordResetEmail(auth: FirebaseAuth, email: String, callback: 
 }
 
 // Firebase authentication with Google
-private fun firebaseAuthWithGoogle(idToken: String?, auth: FirebaseAuth, navController: NavController) {
+private fun firebaseAuthWithGoogle(
+    idToken: String?,
+    auth: FirebaseAuth,
+    navController: NavController,
+    onResult: (String) -> Unit // Tambahkan callback untuk pesan sukses/gagal
+) {
     val credential = GoogleAuthProvider.getCredential(idToken, null)
     auth.signInWithCredential(credential)
         .addOnCompleteListener { task ->
@@ -242,10 +246,12 @@ private fun firebaseAuthWithGoogle(idToken: String?, auth: FirebaseAuth, navCont
                             navController.navigate("home") {
                                 popUpTo("sign_in") { inclusive = true }
                             }
+                            onResult("Sign in successful!")
                         } else {
                             navController.navigate("complete_profile") {
                                 popUpTo("sign_in") { inclusive = true }
                             }
+                            onResult("Sign in successful! Please complete your profile.")
                         }
                     } else {
                         val defaultData = mapOf(
@@ -259,13 +265,14 @@ private fun firebaseAuthWithGoogle(idToken: String?, auth: FirebaseAuth, navCont
                             navController.navigate("complete_profile") {
                                 popUpTo("sign_in") { inclusive = true }
                             }
+                            onResult("Sign in successful! Please complete your profile.")
                         }
                     }
                 }.addOnFailureListener {
-                    navController.navigate("sign_in") {
-                        popUpTo("sign_in") { inclusive = true }
-                    }
+                    onResult("Failed to fetch user data: ${it.message}")
                 }
+            } else {
+                onResult("Google Sign-In failed: ${task.exception?.message}")
             }
         }
 }

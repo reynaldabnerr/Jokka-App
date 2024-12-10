@@ -1,4 +1,4 @@
-package user
+package data
 
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth

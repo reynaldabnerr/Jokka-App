@@ -1,7 +1,6 @@
 package features.home
 
 
-import user.UserViewModel
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInVertically
@@ -23,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
@@ -31,73 +31,39 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.jokka_app.R
 import com.example.jokka_app.Screen
-import common.appbar.AppBar
-import common.appbar.BottomBar
-import common.cardHome.EventHome
-import common.cardHome.EventHomeCard
-import common.cardHome.Food
-import common.cardHome.FoodCard
-import common.cardHome.Place
-import common.cardHome.PlaceHomeCard
-import common.cardHome.PopularSection
-import common.carousel.Carousel
+import component.appbar.AppBar
+import component.appbar.BottomBar
+import component.cardHome.DestinationHomeCard
+import component.cardHome.EventHomeCard
+import component.cardHome.FoodHomeCard
+import component.cardHome.PopularSection
+import component.carousel.Carousel
+import data.MainViewModel
 import kotlinx.coroutines.delay
+import data.UserViewModel
 
 
 @Composable
 fun HomeScreen(
     navController: NavController,
-    userViewModel: UserViewModel = viewModel()
+    userViewModel: UserViewModel = viewModel(),
+    mainViewModel: MainViewModel = viewModel()
 ) {
     val userData by userViewModel.userData.collectAsState()
     val name = userData.name.ifEmpty { "Unknown User" }
 
-    val places = listOf(
-        Place(R.drawable.place1, R.string.destination1, R.string.category1, R.string.category1),
-        Place(R.drawable.place2, R.string.destination2, R.string.category2, R.string.category1),
-        Place(R.drawable.place3, R.string.destination3, R.string.category3, R.string.category1),
-        Place(R.drawable.place4, R.string.destination4, R.string.category4, R.string.category1),
-        Place(R.drawable.place5, R.string.destination5, R.string.category5, R.string.category1)
-    )
-
-    val foods = listOf(
-        Food(R.drawable.food1, R.string.food1, 4.9f, R.string.price1),
-        Food(R.drawable.food2, R.string.food2, 4.8f, R.string.price2),
-        Food(R.drawable.food3, R.string.food3, 4.95f, R.string.price3),
-        Food(R.drawable.food4, R.string.food4, 4.7f, R.string.price4),
-        Food(R.drawable.food5, R.string.food5, 4.2f, R.string.price5)
-    )
-    val events = listOf(
-        EventHome(
-            R.drawable.events1,
-            R.string.event1,
-            "28 Oct 2024",
-            "Fort Rotterdam",
-            "F8 Makassar"
-        ),
-        EventHome(
-            R.drawable.events2,
-            R.string.event2,
-            "5 Nov 2024",
-            "Pantai Losari",
-            "Jokka-Jokka Makassar"
-        ),
-        EventHome(
-            R.drawable.events3,
-            R.string.event3,
-            "12 Nov 2024",
-            "Trans Studio",
-            "Music Concert"
-        )
-    )
+    // Mengambil data dari MainViewModel
+    val foods by mainViewModel.foods.collectAsState()
+    val events by mainViewModel.events.collectAsState()
+    val destinations by mainViewModel.destinations.collectAsState()
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
     var isLoaded by remember { mutableStateOf(false) }
 
+    // Animasi ketika data telah dimuat
     LaunchedEffect(Unit) {
         delay(100) // Small delay for animation
         isLoaded = true
@@ -110,13 +76,15 @@ fun HomeScreen(
                 brush = Brush.verticalGradient(
                     colors = listOf(
                         Color(0xFFFFFFFF),
-                        Color(0xFFF5F5F5)
+                        Color(0xFFF3F3F3),
+                        Color(0xFFDCDCDC)
                     )
                 )
             )
     ) {
         AppBar(
-            title = "Welcome"
+            title = "Visit Makassar",
+            modifier = Modifier.shadow(4.dp)
         )
 
         LazyColumn(
@@ -137,18 +105,30 @@ fun HomeScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp)
+                            .background(
+                                brush = Brush.linearGradient(
+                                    colors = listOf(
+                                        Color(0xFFFF2111), // Merah muda
+                                        Color(0xFFFA8F8F), // Pink lembut
+                                        Color(0xFF5875FF)  // Pink terang
+                                    )
+                                ),
+                                shape = MaterialTheme.shapes.medium
+                            )
+                            .padding(16.dp)
                     ) {
                         Text(
                             text = "Hello, $name",
-                            fontFamily = FontFamily.Monospace,
+                            fontFamily = FontFamily.SansSerif,
                             style = MaterialTheme.typography.headlineSmall,
-                            color = Color.Gray
+                            color = Color.White
                         )
                         Text(
-                            text = "Welcome to Makassar ✨",
-                            fontFamily = FontFamily.Monospace,
+                            text = "Welcome to Makassar !!!",
+                            fontFamily = FontFamily.SansSerif,
                             style = MaterialTheme.typography.headlineMedium,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Medium,
+                            color = Color.Unspecified
                         )
                     }
                 }
@@ -156,24 +136,33 @@ fun HomeScreen(
 
             // Featured Places Carousel
             item {
-                Carousel(
-                    places = places.take(3)
-                )
+                if (destinations.isNotEmpty()) {
+                    Carousel(
+                        destinations = destinations.take(3)
+                    )
+                } else {
+                    Text("Loading places...", color = Color.Gray)
+                }
             }
 
             // Popular Places Section
             item {
+                Text(
+                    text = "Discover Popular Places",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 16.dp, bottom = 16.dp)
+                )
                 PopularSection(
-                    title = "Popular Places \uD83C\uDFDB\uFE0F \uD83D\uDDFA\uFE0F",
-                    items = places,
+                    title = "Top Destinations to Explore",
+                    items = destinations,
                     onClickSeeAll = {
-                        navController.navigate(Screen.Destination.route) // Deklarasikan navigasi di HomeScreen
-                    }, // Pass navController to PopularSection
-                    itemContent = { place ->
-                        PlaceHomeCard(
-                            place = place,
-                            modifier = Modifier
-                                .fillMaxWidth()
+                        navController.navigate(Screen.Destination.route)
+                    },
+                    itemContent = { destination ->
+                        DestinationHomeCard(
+                            destination = destination,
+                            modifier = Modifier.fillMaxWidth()
                         )
                     }
                 )
@@ -181,28 +170,44 @@ fun HomeScreen(
 
             // Food Section
             item {
+                Text(
+                    text = "Savor Delicious Foods",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 16.dp, bottom = 16.dp)
+                )
                 PopularSection(
-                    title = "Popular Foods \uD83C\uDF5C",
-                    items = foods,
+                    title = "Top Delicacies You Can’t Miss",
+                    items = foods.take(4),
                     onClickSeeAll = {
-                        navController.navigate(Screen.Food.route) // Deklarasikan navigasi di HomeScreen
-                    },// Pass navController to PopularSection
+                        navController.navigate(Screen.Food.route)
+                    },
                     itemContent = { food ->
-                        FoodCard(food = food)
+                        FoodHomeCard(food = food)
                     }
                 )
             }
 
             // Events Section
             item {
+                Text(
+                    text = "Upcoming Events",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 16.dp, bottom = 16.dp)
+                )
                 PopularSection(
-                    title = "Events in Makassar",
-                    items = events,
+                    title = "Makassar’s Event Vibes",
+                    items = events.take(4),
                     onClickSeeAll = {
-                        navController.navigate(Screen.Event.route) // Deklarasikan navigasi di HomeScreen
-                    }, // Pass navController to PopularSection
+                        navController.navigate(Screen.Event.route)
+                    },
                     itemContent = { event ->
-                        EventHomeCard(event = event, modifier = Modifier.fillMaxWidth())
+                        EventHomeCard(
+                            event = event,
+                            modifier = Modifier.fillMaxWidth(),
+                            navController = navController
+                        )
                     }
                 )
             }
@@ -215,7 +220,7 @@ fun HomeScreen(
                 if (selectedScreen != currentRoute) {
                     navController.navigate(selectedScreen)
                 }
-            }
+            },
         )
     }
 }

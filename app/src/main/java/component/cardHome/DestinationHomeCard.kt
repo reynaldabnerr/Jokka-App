@@ -1,6 +1,5 @@
-package common.cardHome
+package component.cardHome
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,55 +21,52 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-
-data class Place(
-    val imageResourceId: Int,
-    val stringResourceId: Int,
-    val categoryResourceId: Int, // Add the category resource ID here
-    val category1: Int
-)
+import coil.compose.AsyncImage
+import data.Destination
 
 
 @Composable
-fun PlaceHomeCard(
-    place: Place,
-    modifier: Modifier = Modifier,
+fun DestinationHomeCard(
+    destination: Destination,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
-            .width(160.dp) // Matches the width of common.cardScreen.FoodCard
-            .height(200.dp), // Matches the height of common.cardScreen.FoodCard
+            .width(160.dp)
+            .height(200.dp),
         shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp) // Consistent elevation
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White // Warna latar belakang kartu
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column {
-            // Place Image
-            Image(
-                painter = painterResource(id = place.imageResourceId),
-                contentDescription = LocalContext.current.getString(place.stringResourceId),
+            // Destination Image
+            AsyncImage(
+                model = destination.destinationimage,
+                contentDescription = destination.destinationdescription,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(120.dp)
-                    .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)), // Clipping image for rounded corners
+                    .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
                 contentScale = ContentScale.Crop
             )
 
-            // Place Details
+            // Destination Details
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(8.dp),
-                verticalArrangement = Arrangement.SpaceBetween // Space between title and optional section
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = LocalContext.current.getString(place.stringResourceId),
+                    text = destination.destinationname,
                     style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Medium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -87,16 +83,16 @@ fun PlaceHomeCard(
                             modifier = Modifier.size(16.dp)
                         )
                         Text(
-                            text = "4.5", // Example rating
+                            text = destination.destinationrating,
                             style = MaterialTheme.typography.bodySmall,
                             modifier = Modifier.padding(start = 4.dp)
                         )
                     }
                     Text(
-                        text = LocalContext.current.getString(place.categoryResourceId), // Example tag
+                        text = destination.destinationcategory,
                         style = MaterialTheme.typography.bodySmall,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
+                        fontWeight = FontWeight.W400,
+                        color = Color.Black
                     )
                 }
             }

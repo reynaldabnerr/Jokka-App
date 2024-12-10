@@ -3,7 +3,7 @@
 package features.auth
 
 import CustomButton
-import user.UserViewModel
+import data.UserViewModel
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.jokka_app.R
 import com.example.jokka_app.Screen
-import common.textfield.TextField
+import component.textfield.TextField
 
 
 @Composable

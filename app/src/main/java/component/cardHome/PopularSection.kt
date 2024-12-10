@@ -1,4 +1,4 @@
-package common.cardHome
+package component.cardHome
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
@@ -72,10 +72,10 @@ fun <T> PopularSection(
             ) {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleLarge.copy(
+                    style = MaterialTheme.typography.titleMedium.copy(
                         fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        fontFamily = FontFamily.Monospace
+                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = FontFamily.SansSerif
                     ),
                 )
 

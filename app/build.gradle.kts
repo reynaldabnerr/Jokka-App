@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.example.jokka_app"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.jokka_app"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -31,11 +31,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
@@ -65,9 +65,9 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.androidx.datastore.preferences.core.jvm)
     implementation(libs.androidx.datastore.preferences.core.jvm)
-    implementation("com.google.firebase:firebase-auth-ktx:23.1.0") // Firebase Authentication
-    implementation("com.google.android.gms:play-services-auth:21.2.0") // Google Sign-In
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation(libs.firebase.auth.ktx) // Firebase Authentication
+    implementation(libs.play.services.auth) // Google Sign-In
+    implementation(libs.androidx.datastore.preferences.v100)
     implementation(libs.firebase.firestore.ktx)
 
     testImplementation(libs.junit)

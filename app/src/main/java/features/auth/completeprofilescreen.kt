@@ -17,8 +17,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import common.textfield.TextField
-import user.UserViewModel
+import component.textfield.TextField
+import data.UserViewModel
 
 @Composable
 fun CompleteProfileScreen(navController: NavController, userViewModel: UserViewModel = viewModel()) {
