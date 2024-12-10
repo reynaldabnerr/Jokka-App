@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -52,9 +53,9 @@ import java.util.Locale
 @Composable
 fun DetailEventScreen(
     eventId: String,
+    modifier: Modifier = Modifier,
     navController: NavController,
-    mainViewModel: MainViewModel = viewModel(),
-    modifier: Modifier = Modifier
+    mainViewModel: MainViewModel = viewModel()
 ) {
     val eventState = mainViewModel.selectedEvent.collectAsState()
     val event = eventState.value
@@ -210,7 +211,8 @@ fun DetailEventScreen(
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(16.dp),
-                            lineHeight = MaterialTheme.typography.bodyMedium.lineHeight
+                            lineHeight = MaterialTheme.typography.bodyMedium.lineHeight,
+                            textAlign = TextAlign.Justify
                         )
                     }
                 }
