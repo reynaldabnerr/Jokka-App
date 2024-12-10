@@ -83,7 +83,7 @@ fun HomeScreen(
             )
     ) {
         AppBar(
-            title = "Welcome",
+            title = "Visit Makassar",
             modifier = Modifier.shadow(4.dp)
         )
 

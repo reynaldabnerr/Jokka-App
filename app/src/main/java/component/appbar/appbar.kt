@@ -49,7 +49,7 @@ fun AppBar(
                 text = title,
                 color = Color.White,
                 fontSize = 24.sp,
-                fontFamily = FontFamily.Monospace,
+                fontFamily = FontFamily.SansSerif,
                 modifier = Modifier
                     .fillMaxHeight()
                     .padding(start = 8.dp, top = 8.dp)
