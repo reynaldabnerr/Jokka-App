@@ -100,7 +100,7 @@ fun FoodCard(
                     exit = fadeOut() + shrinkVertically()
                 ) {
                     Text(
-                        text = food.fooddesc,
+                        text = food.fooddesc.substringBefore("."),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Normal,
                         color = Color.White,

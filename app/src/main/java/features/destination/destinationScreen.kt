@@ -51,7 +51,8 @@ fun DestinationScreen(
         ) {
             items(destination) { destination ->
                 DestinationCard(
-                    destination = destination
+                    destination = destination,
+                    navController = navController,
                 )
             }
         }
