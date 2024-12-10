@@ -27,6 +27,7 @@ import component.loadingeffect.EventCardSkeleton
 import data.Event
 import data.fetchEvents
 
+
 @Composable
 fun EventScreen(
     navController: NavController,

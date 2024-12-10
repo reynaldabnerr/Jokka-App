@@ -49,7 +49,8 @@ fun FoodScreen(
         ) {
             items(foods) { food ->
                 FoodCard(
-                    food = food
+                    food = food,
+                    navController= navController
                 )
             }
         }

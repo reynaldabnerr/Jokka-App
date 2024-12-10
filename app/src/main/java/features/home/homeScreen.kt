@@ -183,7 +183,9 @@ fun HomeScreen(
                         navController.navigate(Screen.Food.route)
                     },
                     itemContent = { food ->
-                        FoodHomeCard(food = food)
+                        FoodHomeCard(food = food,
+                            modifier = Modifier.fillMaxWidth(),
+                            navController = navController)
                     }
                 )
             }
