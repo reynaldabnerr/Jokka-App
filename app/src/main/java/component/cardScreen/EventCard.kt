@@ -102,7 +102,6 @@ fun EventCard(
                     color = Color.Gray,
                     modifier = Modifier
                         .background(if (isLoading) Color.LightGray else Color.Transparent)
-                        .padding(bottom = 8.dp)
                 )
 
                 // Tanggal Event

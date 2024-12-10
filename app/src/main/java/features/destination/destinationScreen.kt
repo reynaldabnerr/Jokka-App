@@ -28,7 +28,7 @@ fun DestinationScreen(
 
     Scaffold(
         topBar = {
-            AppBar(title = "Foods")
+            AppBar(title = "Destination")
         },
         bottomBar = {
             BottomBar(
