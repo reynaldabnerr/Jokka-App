@@ -50,10 +50,7 @@ fun FoodScreen(
             items(foods) { food ->
                 FoodCard(
                     food = food,
-                    navController= navController,
-                    onClick = {
-                        navController.navigate("food_details/${food.foodid}")
-                    }
+                    navController= navController
                 )
             }
         }

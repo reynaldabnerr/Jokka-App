@@ -48,8 +48,7 @@ import java.text.NumberFormat
 @Composable
 fun FoodCard(
     food: Food,
-    navController:NavController,
-    onClick: () -> Unit = {}
+    navController: NavController
 ) {
     var isExpanded by remember { mutableStateOf(false) }
     var clickCount by remember { mutableStateOf(0) }
@@ -69,12 +68,11 @@ fun FoodCard(
                 clickCount++
                 isExpanded = !isExpanded
                 if (clickCount == 2) {
-                    navController.navigate("home") // Navigasi ke layar "Home"
+                    navController.navigate("food_details/${food.foodid}") // Navigasi ke layar "Home"
                 }
             },
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(8.dp),
-        onClick = onClick
     ) {
         Box {
             Image(

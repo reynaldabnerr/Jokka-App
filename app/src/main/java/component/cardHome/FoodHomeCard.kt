@@ -1,5 +1,6 @@
 package component.cardHome
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,17 +27,21 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import java.text.NumberFormat
 import data.Food
 
 
 @Composable
-fun FoodHomeCard(food: Food, modifier: Modifier = Modifier) {
+fun FoodHomeCard(food: Food, modifier: Modifier = Modifier, navController: NavController) {
     Card(
         modifier = modifier
             .width(160.dp)
-            .height(200.dp),
+            .height(200.dp)
+            .clickable {
+            navController.navigate("food_details/${food.foodid}")
+        },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White // Warna latar belakang kartu
