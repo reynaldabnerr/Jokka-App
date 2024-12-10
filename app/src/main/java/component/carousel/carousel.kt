@@ -21,9 +21,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import data.Destination
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import data.Destination
 
 @Composable
 fun Carousel(destinations: List<Destination>) {

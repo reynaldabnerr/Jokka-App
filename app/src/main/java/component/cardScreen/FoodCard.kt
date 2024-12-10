@@ -40,15 +40,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import data.Food
 import java.text.NumberFormat
 
 @Composable
 fun FoodCard(
-    food: Food
+    food: Food,
+    navController:NavController,
+    onClick: () -> Unit = {}
 ) {
     var isExpanded by remember { mutableStateOf(false) }
+    var clickCount by remember { mutableStateOf(0) }
 
     val expandTransition = updateTransition(isExpanded, label = "expandTransition")
     val cardHeight by expandTransition.animateDp(
@@ -61,9 +65,16 @@ fun FoodCard(
             .fillMaxWidth()
             .height(cardHeight)
             .padding(8.dp)
-            .clickable { isExpanded = !isExpanded },
+            .clickable {
+                clickCount++
+                isExpanded = !isExpanded
+                if (clickCount == 2) {
+                    navController.navigate("home") // Navigasi ke layar "Home"
+                }
+            },
         shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(8.dp)
+        elevation = CardDefaults.cardElevation(8.dp),
+        onClick = onClick
     ) {
         Box {
             Image(
