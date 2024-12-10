@@ -155,14 +155,15 @@ fun HomeScreen(
                 )
                 PopularSection(
                     title = "Top Destinations to Explore",
-                    items = destinations,
+                    items = destinations.take(4),
                     onClickSeeAll = {
                         navController.navigate(Screen.Destination.route)
                     },
                     itemContent = { destination ->
                         DestinationHomeCard(
                             destination = destination,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
+                            navController = navController
                         )
                     }
                 )

@@ -28,14 +28,14 @@ fun DestinationScreen(
 
     Scaffold(
         topBar = {
-            AppBar(title = "Destination")
+            AppBar(title = "Destinations")
         },
         bottomBar = {
             BottomBar(
                 currentScreen = Screen.Destination.route,
                 navController = navController,
                 onItemSelected = { selectedScreen ->
-                    if (selectedScreen != Screen.Food.route) {
+                    if (selectedScreen != Screen.Destination.route) {
                         navController.navigate(selectedScreen)
                     }
                 }

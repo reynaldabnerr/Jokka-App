@@ -21,6 +21,7 @@ import features.profile.ProfileScreen
 import data.UserViewModel
 import features.event.DetailEventScreen
 import features.food.DetailFoodScreen
+import features.destination.DetailDestinationScreen
 
 @Composable
 fun NavGraph(
@@ -76,6 +77,16 @@ fun NavGraph(
             if (foodId != null) {
                 DetailFoodScreen(
                     foodId = foodId,
+                    navController = navController,
+                    mainViewModel = mainViewModel
+                )
+            }
+        }
+        composable("destination_details/{destinationId}") { backStackEntry ->
+            val destinationId = backStackEntry.arguments?.getString("destinationId")
+            if (destinationId != null) {
+                DetailDestinationScreen(
+                    destinationId = destinationId,
                     navController = navController,
                     mainViewModel = mainViewModel
                 )

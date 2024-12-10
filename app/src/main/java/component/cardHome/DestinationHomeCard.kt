@@ -1,5 +1,6 @@
 package component.cardHome
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import data.Destination
 
@@ -32,12 +34,16 @@ import data.Destination
 @Composable
 fun DestinationHomeCard(
     destination: Destination,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController
 ) {
     Card(
         modifier = modifier
             .width(160.dp)
-            .height(200.dp),
+            .height(200.dp)
+            .clickable {
+                navController.navigate("destination_details/${destination.destinationid}")
+            },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White // Warna latar belakang kartu

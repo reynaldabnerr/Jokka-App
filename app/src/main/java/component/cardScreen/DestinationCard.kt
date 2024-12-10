@@ -69,7 +69,7 @@ fun DestinationCard(
                 clickCount++
                 isExpanded = !isExpanded
                 if (clickCount == 2) {
-                    navController.navigate("home") // Navigasi ke layar "Home"
+                    navController.navigate("destination_details/${destination.destinationid}") //
                 }
             },
         shape = RoundedCornerShape(16.dp),

@@ -31,6 +31,9 @@ class MainViewModel : ViewModel() {
     private val _selectedFood = MutableStateFlow<Food?>(null)
     val selectedFood: StateFlow<Food?> = _selectedFood
 
+    private val _selectedDestination = MutableStateFlow<Destination?>(null)
+    val selectedDestination: StateFlow<Destination?> = _selectedDestination
+
     init {
         fetchAllData()
     }
@@ -85,6 +88,18 @@ class MainViewModel : ViewModel() {
                 Log.e("ViewModel", "Food not found for ID: $foodId")
             }
             _selectedFood.value = food
+        }
+    }
+
+    fun loadDestinationDetails(destinationId: String) {
+        viewModelScope.launch {
+            val destination = _destinations.value.find { it.destinationid == destinationId }
+            if (destination != null) {
+                Log.d("ViewModel", "destination found: $destination")
+            } else {
+                Log.e("ViewModel", "destination not found for ID: $destinationId")
+            }
+            _selectedDestination.value = destination
         }
     }
 }
